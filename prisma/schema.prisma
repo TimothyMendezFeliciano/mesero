@@ -9,7 +9,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -31,6 +31,65 @@ model Post {
 }
 
 model Restaurant {
- id String @id @default(uuid())
- name String @index
+  id                    String         @id @default(uuid())
+  name                  String
+  menu                  RestaurantMenu @relation(fields: [restaurantMenuId], references: [id])
+  location              Location?
+  restaurantMenuId      String
+  previousAvgOrderCount Float          @default(0)
+  newAvgOrderCount      Float          @default(0)
+  tables                Table[]
+
+  @@index([name])
+}
+
+model RestaurantMenu {
+  id         String       @id @default(uuid())
+  menuItems  MenuItems[]
+  Restaurant Restaurant[]
+}
+
+model Location {
+  id           String     @id @default(uuid())
+  latitude     Float
+  longitud     Float
+  coordinates  String
+  restaurant   Restaurant @relation(fields: [restaurandId], references: [id])
+  restaurandId String     @unique
+
+  @@index([coordinates])
+  @@index([latitude, longitud])
+  @@index([latitude, longitud, restaurandId])
+}
+
+model Table {
+  id           String      @id @default(uuid())
+  tableNumber  Int
+  Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId String?
+}
+
+model MenuItems {
+  id               String          @id @default(uuid())
+  title            String
+  description      String
+  image            String?
+  availability     Boolean
+  category         Categories      @relation(fields: [categoriesId], references: [id])
+  price            Float
+  categoriesId     String
+  RestaurantMenu   RestaurantMenu? @relation(fields: [restaurantMenuId], references: [id])
+  restaurantMenuId String?
+
+  @@index([availability])
+  @@index([title])
+  @@index([availability, title])
+}
+
+model Categories {
+  id        String      @id @default(uuid())
+  title     String
+  MenuItems MenuItems[]
+
+  @@index([title])
 }
