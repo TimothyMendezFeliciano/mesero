@@ -69,16 +69,16 @@ model Table {
 }
 
 model MenuItems {
-  id               String          @id @default(uuid())
+  id               String         @id @default(uuid())
   title            String
   description      String
   image            String?
   availability     Boolean
-  category         Categories      @relation(fields: [categoriesId], references: [id])
+  category         Categories     @relation(fields: [categoriesId], references: [id])
   price            Float
   categoriesId     String
-  RestaurantMenu   RestaurantMenu? @relation(fields: [restaurantMenuId], references: [id])
-  restaurantMenuId String?
+  RestaurantMenu   RestaurantMenu @relation(fields: [restaurantMenuId], references: [id])
+  restaurantMenuId String
 
   @@index([availability])
   @@index([title])

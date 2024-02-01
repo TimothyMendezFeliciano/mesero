@@ -30,7 +30,8 @@ declare interface MyRestaurantEventEmitter {
   ): boolean;
 }
 
-class MyRestaurantEventEmitter extends EventEmitter {}
+class MyRestaurantEventEmitter extends EventEmitter {
+}
 
 const ee = new MyRestaurantEventEmitter();
 
