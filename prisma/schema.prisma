@@ -4,8 +4,6 @@
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
-  // provider = "sqlite"
-  // url      = "file:./dev.db"
 }
 
 generator client {
@@ -31,13 +29,14 @@ model Post {
 }
 
 model Restaurant {
-  id                    String         @id @default(uuid())
+  id                    String          @id @default(uuid())
   name                  String
-  menu                  RestaurantMenu @relation(fields: [restaurantMenuId], references: [id])
+  image                 String?
+  menu                  RestaurantMenu? @relation(fields: [restaurantMenuId], references: [id])
   location              Location?
   restaurantMenuId      String
-  previousAvgOrderCount Float          @default(0)
-  newAvgOrderCount      Float          @default(0)
+  previousAvgOrderCount Float           @default(0)
+  newAvgOrderCount      Float           @default(0)
   tables                Table[]
 
   @@index([name])
@@ -51,9 +50,9 @@ model RestaurantMenu {
 
 model Location {
   id           String     @id @default(uuid())
-  latitude     Float
-  longitud     Float
-  coordinates  String
+  latitude     Float?
+  longitud     Float?
+  coordinates  String?
   restaurant   Restaurant @relation(fields: [restaurandId], references: [id])
   restaurandId String     @unique
 
