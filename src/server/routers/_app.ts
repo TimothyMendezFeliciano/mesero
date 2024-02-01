@@ -5,11 +5,15 @@ import { router, publicProcedure } from '../trpc';
 import { postRouter } from './post';
 import { observable } from '@trpc/server/observable';
 import { clearInterval } from 'timers';
+import { restaurantRouter } from './restaurant';
+import { menuItemsRouter } from './menuItems';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
 
   post: postRouter,
+  restaurant: restaurantRouter,
+  menuItems: menuItemsRouter,
 
   randomNumber: publicProcedure.subscription(() => {
     return observable<number>((emit) => {
