@@ -1,338 +1,71 @@
-import { trpc } from '../utils/trpc';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import Head from 'next/head';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { COMPANY_INFO } from '../constants/companyInfo';
+import { navigation } from '../constants/navigation';
+import Layout from '../components/Layout';
 
-function AddMessageForm({ onMessagePost }: { onMessagePost: () => void }) {
-  const addPost = trpc.post.add.useMutation();
-  const { data: session } = useSession();
-  const [message, setMessage] = useState('');
-  const [enterToPostMessage, setEnterToPostMessage] = useState(true);
-  async function postMessage() {
-    const input = {
-      text: message,
-    };
-    try {
-      await addPost.mutateAsync(input);
-      setMessage('');
-      onMessagePost();
-    } catch {}
-  }
-
-  const isTyping = trpc.post.isTyping.useMutation();
-
-  const userName = session?.user?.name;
-  if (!userName) {
-    return (
-      <div className="flex w-full justify-between rounded bg-gray-800 px-3 py-2 text-lg text-gray-200">
-        <p className="font-bold">
-          You have to{' '}
-          <button
-            className="inline font-bold underline"
-            onClick={() => signIn()}
+export default function Home() {
+  return (
+    <Layout>
+      <div className="mx-auto max-w-7xl px-6 py-6 sm:py-16 lg:flex lg:items-center lg:gap-x-10 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+          <h1 className="mt-2 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            {COMPANY_INFO.tagline}
+          </h1>
+          <p className="mt-4 text-lg leading-8 text-gray-600">
+            {COMPANY_INFO.description}
+          </p>
+          <div className="mt-6 flex items-center gap-x-6">
+            <a
+              href={`${
+                navigation.find((item) => item.name === 'Register')?.href
+              }`}
+              className="btnNormal"
+            >
+              Register
+            </a>
+            <a
+              href={`${
+                navigation.find((item) => item.name === 'Example')?.href
+              }`}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              See example <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+        <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
+          <svg
+            viewBox="0 0 366 729"
+            role="img"
+            className="mx-auto w-[22.875rem] max-w-full drop-shadow-xl"
           >
-            sign in
-          </button>{' '}
-          to write.
-        </p>
-        <button
-          onClick={() => signIn()}
-          data-testid="signin"
-          className="h-full rounded bg-indigo-500 px-4"
-        >
-          Sign In
-        </button>
-      </div>
-    );
-  }
-  return (
-    <>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          /**
-           * In a real app you probably don't want to use this manually
-           * Checkout React Hook Form - it works great with tRPC
-           * @link https://react-hook-form.com/
-           */
-          await postMessage();
-        }}
-      >
-        <fieldset disabled={addPost.isPending} className="min-w-0">
-          <div className="flex w-full items-end rounded bg-gray-500 px-3 py-2 text-lg text-gray-200">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="flex-1 bg-transparent outline-0"
-              rows={message.split(/\r|\n/).length}
-              id="text"
-              name="text"
-              autoFocus
-              onKeyDown={async (e) => {
-                if (e.key === 'Shift') {
-                  setEnterToPostMessage(false);
-                }
-                if (e.key === 'Enter' && enterToPostMessage) {
-                  void postMessage();
-                }
-                isTyping.mutate({ typing: true });
-              }}
-              onKeyUp={(e) => {
-                if (e.key === 'Shift') {
-                  setEnterToPostMessage(true);
-                }
-              }}
-              onBlur={() => {
-                setEnterToPostMessage(true);
-                isTyping.mutate({ typing: false });
-              }}
+            <title>App screenshot</title>
+            <defs>
+              <clipPath id="2ade4387-9c63-4fc4-b754-10e687a0d332">
+                <rect width={316} height={684} rx={36} />
+              </clipPath>
+            </defs>
+            <path
+              fill="#4B5563"
+              d="M363.315 64.213C363.315 22.99 341.312 1 300.092 1H66.751C25.53 1 3.528 22.99 3.528 64.213v44.68l-.857.143A2 2 0 0 0 1 111.009v24.611a2 2 0 0 0 1.671 1.973l.95.158a2.26 2.26 0 0 1-.093.236v26.173c.212.1.398.296.541.643l-1.398.233A2 2 0 0 0 1 167.009v47.611a2 2 0 0 0 1.671 1.973l1.368.228c-.139.319-.314.533-.511.653v16.637c.221.104.414.313.56.689l-1.417.236A2 2 0 0 0 1 237.009v47.611a2 2 0 0 0 1.671 1.973l1.347.225c-.135.294-.302.493-.49.607v377.681c0 41.213 22 63.208 63.223 63.208h95.074c.947-.504 2.717-.843 4.745-.843l.141.001h.194l.086-.001 33.704.005c1.849.043 3.442.37 4.323.838h95.074c41.222 0 63.223-21.999 63.223-63.212v-394.63c-.259-.275-.48-.796-.63-1.47l-.011-.133 1.655-.276A2 2 0 0 0 366 266.62v-77.611a2 2 0 0 0-1.671-1.973l-1.712-.285c.148-.839.396-1.491.698-1.811V64.213Z"
             />
-            <div>
-              <button type="submit" className="rounded bg-indigo-500 px-4 py-1">
-                Submit
-              </button>
-            </div>
-          </div>
-        </fieldset>
-        {addPost.error && (
-          <p style={{ color: 'red' }}>{addPost.error.message}</p>
-        )}
-      </form>
-    </>
-  );
-}
-
-export default function IndexPage() {
-  const postsQuery = trpc.post.infinite.useInfiniteQuery(
-    {},
-    {
-      getNextPageParam: (d) => d.nextCursor,
-    },
-  );
-  const utils = trpc.useUtils();
-  const { hasNextPage, isFetchingNextPage, fetchNextPage } = postsQuery;
-
-  // list of messages that are rendered
-  const [messages, setMessages] = useState(() => {
-    const msgs = postsQuery.data?.pages.map((page) => page.items).flat();
-    return msgs;
-  });
-  type Post = NonNullable<typeof messages>[number];
-  const { data: session } = useSession();
-  const userName = session?.user?.name;
-  const scrollTargetRef = useRef<HTMLDivElement>(null);
-
-  // fn to add and dedupe new messages onto state
-  const addMessages = useCallback((incoming?: Post[]) => {
-    setMessages((current) => {
-      const map: Record<Post['id'], Post> = {};
-      for (const msg of current ?? []) {
-        map[msg.id] = msg;
-      }
-      for (const msg of incoming ?? []) {
-        map[msg.id] = msg;
-      }
-      return Object.values(map).sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
-      );
-    });
-  }, []);
-
-  // when new data from `useInfiniteQuery`, merge with current state
-  useEffect(() => {
-    const msgs = postsQuery.data?.pages.map((page) => page.items).flat();
-    addMessages(msgs);
-  }, [postsQuery.data?.pages, addMessages]);
-
-  const scrollToBottomOfList = useCallback(() => {
-    if (scrollTargetRef.current == null) {
-      return;
-    }
-
-    scrollTargetRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    });
-  }, [scrollTargetRef]);
-  useEffect(() => {
-    scrollToBottomOfList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // subscribe to new posts and add
-  trpc.post.onAdd.useSubscription(undefined, {
-    onData(post) {
-      addMessages([post]);
-    },
-    onError(err) {
-      console.error('Subscription error:', err);
-      // we might have missed a message - invalidate cache
-      utils.post.infinite.invalidate();
-    },
-  });
-
-  const [currentlyTyping, setCurrentlyTyping] = useState<string[]>([]);
-  trpc.post.whoIsTyping.useSubscription(undefined, {
-    onData(data) {
-      setCurrentlyTyping(data);
-    },
-  });
-
-  return (
-    <>
-      <Head>
-        <title>Prisma Starter</title>
-        <link rel="icon" href="/public/favicon.ico" />
-      </Head>
-      <div className="flex h-screen flex-col md:flex-row">
-        <section className="flex w-full flex-col bg-gray-800 md:w-72">
-          <div className="flex-1 overflow-y-hidden">
-            <div className="flex h-full flex-col divide-y divide-gray-700">
-              <header className="p-4">
-                <h1 className="text-3xl font-bold text-gray-50">
-                  tRPC WebSocket starter
-                </h1>
-                <p className="text-sm text-gray-400">
-                  Showcases WebSocket + subscription support
-                  <br />
-                  <a
-                    className="text-gray-100 underline"
-                    href="https://github.com/trpc/examples-next-prisma-starter-websockets"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    View Source on GitHub
-                  </a>
-                </p>
-              </header>
-              <div className="hidden flex-1 space-y-6 overflow-y-auto p-4 text-gray-400 md:block">
-                <article className="space-y-2">
-                  <h2 className="text-lg text-gray-200">Introduction</h2>
-                  <ul className="list-inside list-disc space-y-2">
-                    <li>Open inspector and head to Network tab</li>
-                    <li>All client requests are handled through WebSockets</li>
-                    <li>
-                      We have a simple backend subscription on new messages that
-                      adds the newly added message to the current state
-                    </li>
-                  </ul>
-                </article>
-                {userName && (
-                  <article>
-                    <h2 className="text-lg text-gray-200">User information</h2>
-                    <ul className="space-y-2">
-                      <li className="text-lg">
-                        You&apos;re{' '}
-                        <input
-                          id="name"
-                          name="name"
-                          type="text"
-                          disabled
-                          className="bg-transparent"
-                          value={userName}
-                        />
-                      </li>
-                      <li>
-                        <button onClick={() => signOut()}>Sign Out</button>
-                      </li>
-                    </ul>
-                  </article>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="hidden h-16 shrink-0 md:block"></div>
-        </section>
-        <div className="flex-1 overflow-y-hidden md:h-screen">
-          <section className="flex h-full flex-col justify-end space-y-4 bg-gray-700 p-4">
-            <div className="space-y-4 overflow-y-auto">
-              <button
-                data-testid="loadMore"
-                onClick={() => fetchNextPage()}
-                disabled={!hasNextPage || isFetchingNextPage}
-                className="rounded bg-indigo-500 px-4 py-2 text-white disabled:opacity-40"
-              >
-                {isFetchingNextPage
-                  ? 'Loading more...'
-                  : hasNextPage
-                  ? 'Load More'
-                  : 'Nothing more to load'}
-              </button>
-              <div className="space-y-4">
-                {messages?.map((item) => (
-                  <article key={item.id} className=" text-gray-50">
-                    <header className="flex space-x-2 text-sm">
-                      <h3 className="text-base">
-                        {item.source === 'RAW' ? (
-                          item.name
-                        ) : (
-                          <a
-                            href={`https://github.com/${item.name}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {item.name}
-                          </a>
-                        )}
-                      </h3>
-                      <span className="text-gray-500">
-                        {new Intl.DateTimeFormat('en-GB', {
-                          dateStyle: 'short',
-                          timeStyle: 'short',
-                        }).format(item.createdAt)}
-                      </span>
-                    </header>
-                    <p className="whitespace-pre-line text-xl leading-tight">
-                      {item.text}
-                    </p>
-                  </article>
-                ))}
-                <div ref={scrollTargetRef}></div>
-              </div>
-            </div>
-            <div className="w-full">
-              <AddMessageForm onMessagePost={() => scrollToBottomOfList()} />
-              <p className="h-2 italic text-gray-400">
-                {currentlyTyping.length
-                  ? `${currentlyTyping.join(', ')} typing...`
-                  : ''}
-              </p>
-            </div>
-
-            {process.env.NODE_ENV !== 'production' && (
-              <div className="hidden md:block">
-                <ReactQueryDevtools initialIsOpen={false} />
-              </div>
-            )}
-          </section>
+            <path
+              fill="#343E4E"
+              d="M16 59c0-23.748 19.252-43 43-43h246c23.748 0 43 19.252 43 43v615c0 23.196-18.804 42-42 42H58c-23.196 0-42-18.804-42-42V59Z"
+            />
+            <foreignObject
+              width={316}
+              height={684}
+              transform="translate(24 24)"
+              clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
+            >
+              <img
+                src="https://tailwindui.com/img/component-images/mobile-app-screenshot.png"
+                alt=""
+              />
+            </foreignObject>
+          </svg>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
-
-/**
- * If you want to statically render this page
- * - Export `appRouter` & `createContext` from [trpc].ts
- * - Make the `opts` object optional on `createContext()`
- *
- * @link https://trpc.io/docs/v11/ssg
- */
-// export const getStaticProps = async (
-//   context: GetStaticPropsContext<{ filter: string }>,
-// ) => {
-//   const ssg = createServerSideHelpers({
-//     router: appRouter,
-//     ctx: await createContext(),
-//   });
-//
-//   await ssg.fetchQuery('post.all');
-//
-//   return {
-//     props: {
-//       trpcState: ssg.dehydrate(),
-//       filter: context.params?.filter ?? 'all',
-//     },
-//     revalidate: 1,
-//   };
-// };

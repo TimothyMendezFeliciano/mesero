@@ -38,6 +38,7 @@ model Restaurant {
   previousAvgOrderCount Float           @default(0)
   newAvgOrderCount      Float           @default(0)
   tables                Table[]
+  Orders                Orders[]
 
   @@index([name])
 }
@@ -79,6 +80,7 @@ model MenuItems {
   categoriesId     String
   RestaurantMenu   RestaurantMenu @relation(fields: [restaurantMenuId], references: [id])
   restaurantMenuId String
+  orders           Orders[]
 
   @@index([availability])
   @@index([title])
@@ -91,4 +93,12 @@ model Categories {
   MenuItems MenuItems[]
 
   @@index([title])
+}
+
+model Orders {
+  id           String      @id @default(uuid())
+  menuItems    MenuItems[]
+  subTotal     Float
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String
 }

@@ -1,7 +1,23 @@
+-- CreateEnum
+CREATE TYPE "PosterSource" AS ENUM ('RAW', 'GITHUB');
+
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "source" "PosterSource" NOT NULL DEFAULT 'RAW',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "Restaurant" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "image" TEXT,
     "restaurantMenuId" TEXT NOT NULL,
     "previousAvgOrderCount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "newAvgOrderCount" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -19,9 +35,9 @@ CREATE TABLE "RestaurantMenu" (
 -- CreateTable
 CREATE TABLE "Location" (
     "id" TEXT NOT NULL,
-    "latitude" DOUBLE PRECISION NOT NULL,
-    "longitud" DOUBLE PRECISION NOT NULL,
-    "coordinates" TEXT NOT NULL,
+    "latitude" DOUBLE PRECISION,
+    "longitud" DOUBLE PRECISION,
+    "coordinates" TEXT,
     "restaurandId" TEXT NOT NULL,
 
     CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
@@ -45,7 +61,7 @@ CREATE TABLE "MenuItems" (
     "availability" BOOLEAN NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "categoriesId" TEXT NOT NULL,
-    "restaurantMenuId" TEXT,
+    "restaurantMenuId" TEXT NOT NULL,
 
     CONSTRAINT "MenuItems_pkey" PRIMARY KEY ("id")
 );
@@ -57,6 +73,27 @@ CREATE TABLE "Categories" (
 
     CONSTRAINT "Categories_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "Orders" (
+    "id" TEXT NOT NULL,
+    "subTotal" DOUBLE PRECISION NOT NULL,
+    "restaurantId" TEXT NOT NULL,
+
+    CONSTRAINT "Orders_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_MenuItemsToOrders" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Post_createdAt_key" ON "Post"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Post_updatedAt_key" ON "Post"("updatedAt");
 
 -- CreateIndex
 CREATE INDEX "Restaurant_name_idx" ON "Restaurant"("name");
@@ -85,6 +122,12 @@ CREATE INDEX "MenuItems_availability_title_idx" ON "MenuItems"("availability", "
 -- CreateIndex
 CREATE INDEX "Categories_title_idx" ON "Categories"("title");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "_MenuItemsToOrders_AB_unique" ON "_MenuItemsToOrders"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_MenuItemsToOrders_B_index" ON "_MenuItemsToOrders"("B");
+
 -- AddForeignKey
 ALTER TABLE "Restaurant" ADD CONSTRAINT "Restaurant_restaurantMenuId_fkey" FOREIGN KEY ("restaurantMenuId") REFERENCES "RestaurantMenu"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -98,4 +141,13 @@ ALTER TABLE "Table" ADD CONSTRAINT "Table_restaurantId_fkey" FOREIGN KEY ("resta
 ALTER TABLE "MenuItems" ADD CONSTRAINT "MenuItems_categoriesId_fkey" FOREIGN KEY ("categoriesId") REFERENCES "Categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MenuItems" ADD CONSTRAINT "MenuItems_restaurantMenuId_fkey" FOREIGN KEY ("restaurantMenuId") REFERENCES "RestaurantMenu"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "MenuItems" ADD CONSTRAINT "MenuItems_restaurantMenuId_fkey" FOREIGN KEY ("restaurantMenuId") REFERENCES "RestaurantMenu"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_MenuItemsToOrders" ADD CONSTRAINT "_MenuItemsToOrders_A_fkey" FOREIGN KEY ("A") REFERENCES "MenuItems"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_MenuItemsToOrders" ADD CONSTRAINT "_MenuItemsToOrders_B_fkey" FOREIGN KEY ("B") REFERENCES "Orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;
