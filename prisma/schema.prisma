@@ -16,6 +16,20 @@ enum PosterSource {
   GITHUB
 }
 
+model User {
+  id          String       @id @default(uuid())
+  username    String       @unique
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  restaurants Restaurant[]
+  isAdmin     Boolean      @default(false)
+
+  @@index([isAdmin])
+  @@index([createdAt])
+}
+
 model Post {
   id     String       @id @default(uuid())
   name   String
@@ -39,6 +53,8 @@ model Restaurant {
   newAvgOrderCount      Float           @default(0)
   tables                Table[]
   Orders                Orders[]
+  User                  User?           @relation(fields: [userId], references: [id])
+  userId                String?
 
   @@index([name])
 }
