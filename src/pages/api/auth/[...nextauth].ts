@@ -1,10 +1,14 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import type { AppProviders } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
+import { loginSchema } from '../../../common/validation/auth';
+import { prisma } from '../../../server/prisma';
+import { verify } from 'argon2';
 
 let useMockProvider = process.env.NODE_ENV === 'test';
-const { GITHUB_CLIENT_ID, GITHUB_SECRET, NODE_ENV, APP_ENV } = process.env;
+const { GITHUB_CLIENT_ID, GITHUB_SECRET, NODE_ENV, APP_ENV, NEXTAUTH_SECRET } =
+  process.env;
 if (
   (NODE_ENV !== 'production' || APP_ENV === 'test') &&
   (!GITHUB_CLIENT_ID || !GITHUB_SECRET)
@@ -53,7 +57,72 @@ if (useMockProvider) {
     }),
   );
 }
-export default NextAuth({
+
+const basicCredentials = CredentialsProvider({
+  name: 'credentials',
+  credentials: {
+    email: {
+      label: 'Email',
+      type: 'email',
+      placeholder: 'user@email.com',
+    },
+    password: { label: 'Password', type: 'password' },
+  },
+  authorize: async (credentials, request) => {
+    const creds = await loginSchema.parseAsync(credentials);
+    const user = await prisma.user.findFirst({
+      where: { email: creds.email },
+    });
+
+    if (!user) return null;
+
+    const isValidPassword = await verify(user.password, creds.password);
+
+    if (!isValidPassword) return null;
+
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    };
+  },
+});
+
+providers.push(basicCredentials);
+
+export const nextAuthOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers,
-});
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+
+      return token;
+    },
+  },
+  // session: async ({ session, token }) => {
+  //   if (token) {
+  //     session.id = token.id;
+  //   }
+  //
+  //   return session;
+  // },
+  // jwt: {
+  //   secret: NEXTAUTH_SECRET,
+  //   maxAge: 15 * 24 * 30 * 60,
+  // },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+  secret: NEXTAUTH_SECRET,
+  pages: {
+    signIn: '/',
+    newUser: '/sign-up',
+  },
+}
+export default NextAuth(nextAuthOptions);
