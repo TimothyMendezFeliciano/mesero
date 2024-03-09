@@ -1,6 +1,7 @@
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { CreateWSSContextFnOptions } from '@trpc/server/adapters/ws';
 import { getSession } from 'next-auth/react';
+import { prisma } from './prisma';
 
 /**
  * Creates context for an incoming request
@@ -9,8 +10,8 @@ import { getSession } from 'next-auth/react';
 export const createContext = async (
   opts: CreateNextContextOptions | CreateWSSContextFnOptions,
 ) => {
-  const session = await getSession(opts);
   const { req, res } = opts;
+  const session = await getSession(opts);
 
   console.log('createContext for', session?.user?.name ?? 'unknown user');
 
@@ -18,6 +19,7 @@ export const createContext = async (
     session,
     req,
     res,
+    prisma,
   };
 };
 
