@@ -2,9 +2,10 @@ import { publicProcedure, router } from '../trpc';
 import { signUpSchema } from '../../common/validation/auth';
 import { TRPCError } from '@trpc/server';
 import { hash } from 'argon2';
+import { UserType } from '@prisma/client';
 
 export const signUpRouter = router({
-  signUp: publicProcedure
+  createUser: publicProcedure
     .input(signUpSchema)
     .mutation(async ({ input, ctx }) => {
       const { username, email, password } = input;
@@ -23,13 +24,16 @@ export const signUpRouter = router({
       const hashedPassword = await hash(password);
 
       const result = await ctx.prisma.user.create({
-        data: { username, email, password: hashedPassword },
+        data: {
+          username, email, password: hashedPassword,
+          isAdmin: email === process.env.NEXTADMIN_EMAIL ? UserType.ADMIN : UserType.GUEST,
+        },
       });
 
       return {
         status: 201,
         message: 'Account created successfully',
-        result: result.email,
+        result: result,
       };
     }),
 });

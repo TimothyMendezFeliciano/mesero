@@ -84,6 +84,7 @@ const basicCredentials = CredentialsProvider({
       id: user.id,
       email: user.email,
       username: user.username,
+      role: user.isAdmin,
     };
   },
 });
@@ -98,9 +99,14 @@ export const nextAuthOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.role = user.role;
       }
 
       return token;
+    },
+    session: async ({ session, token, user }) => {
+      session.user.role = token.role;
+      return session;
     },
   },
   // session: async ({ session, token }) => {
@@ -124,5 +130,5 @@ export const nextAuthOptions: NextAuthOptions = {
     signIn: '/',
     newUser: '/sign-up',
   },
-}
+};
 export default NextAuth(nextAuthOptions);

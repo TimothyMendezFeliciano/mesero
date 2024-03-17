@@ -1,6 +1,22 @@
 -- CreateEnum
 CREATE TYPE "PosterSource" AS ENUM ('RAW', 'GITHUB');
 
+-- CreateEnum
+CREATE TYPE "UserType" AS ENUM ('ADMIN', 'EMPLOYEE', 'OWNER', 'GUEST');
+
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isAdmin" "UserType" NOT NULL DEFAULT 'GUEST',
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "Post" (
     "id" TEXT NOT NULL,
@@ -21,6 +37,7 @@ CREATE TABLE "Restaurant" (
     "restaurantMenuId" TEXT NOT NULL,
     "previousAvgOrderCount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "newAvgOrderCount" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "userId" TEXT,
 
     CONSTRAINT "Restaurant_pkey" PRIMARY KEY ("id")
 );
@@ -90,6 +107,18 @@ CREATE TABLE "_MenuItemsToOrders" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE INDEX "User_isAdmin_idx" ON "User"("isAdmin");
+
+-- CreateIndex
+CREATE INDEX "User_createdAt_idx" ON "User"("createdAt");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Post_createdAt_key" ON "Post"("createdAt");
 
 -- CreateIndex
@@ -130,6 +159,9 @@ CREATE INDEX "_MenuItemsToOrders_B_index" ON "_MenuItemsToOrders"("B");
 
 -- AddForeignKey
 ALTER TABLE "Restaurant" ADD CONSTRAINT "Restaurant_restaurantMenuId_fkey" FOREIGN KEY ("restaurantMenuId") REFERENCES "RestaurantMenu"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Restaurant" ADD CONSTRAINT "Restaurant_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Location" ADD CONSTRAINT "Location_restaurandId_fkey" FOREIGN KEY ("restaurandId") REFERENCES "Restaurant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
