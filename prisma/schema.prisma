@@ -16,6 +16,27 @@ enum PosterSource {
   GITHUB
 }
 
+enum UserType {
+  ADMIN
+  EMPLOYEE
+  OWNER
+  GUEST
+}
+
+model User {
+  id          String       @id @default(uuid())
+  username    String       @unique
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  restaurants Restaurant[]
+  isAdmin     UserType     @default(GUEST)
+
+  @@index([isAdmin])
+  @@index([createdAt])
+}
+
 model Post {
   id     String       @id @default(uuid())
   name   String
@@ -38,6 +59,9 @@ model Restaurant {
   previousAvgOrderCount Float           @default(0)
   newAvgOrderCount      Float           @default(0)
   tables                Table[]
+  Orders                Orders[]
+  User                  User?           @relation(fields: [userId], references: [id])
+  userId                String?
 
   @@index([name])
 }
@@ -69,16 +93,17 @@ model Table {
 }
 
 model MenuItems {
-  id               String          @id @default(uuid())
+  id               String         @id @default(uuid())
   title            String
   description      String
   image            String?
   availability     Boolean
-  category         Categories      @relation(fields: [categoriesId], references: [id])
+  category         Categories     @relation(fields: [categoriesId], references: [id])
   price            Float
   categoriesId     String
-  RestaurantMenu   RestaurantMenu? @relation(fields: [restaurantMenuId], references: [id])
-  restaurantMenuId String?
+  RestaurantMenu   RestaurantMenu @relation(fields: [restaurantMenuId], references: [id])
+  restaurantMenuId String
+  orders           Orders[]
 
   @@index([availability])
   @@index([title])
@@ -91,4 +116,12 @@ model Categories {
   MenuItems MenuItems[]
 
   @@index([title])
+}
+
+model Orders {
+  id           String      @id @default(uuid())
+  menuItems    MenuItems[]
+  subTotal     Float
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String
 }
