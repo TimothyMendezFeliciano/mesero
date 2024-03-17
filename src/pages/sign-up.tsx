@@ -14,7 +14,7 @@ const SignUp: NextPage = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const { mutateAsync } = trpc.signUp.signUp.useMutation();
+  const { mutateAsync } = trpc.signUp.createUser.useMutation();
 
   const onSubmit = useCallback(
     async (data: ISignUp) => {
