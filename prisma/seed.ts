@@ -4,7 +4,11 @@
  * @link https://www.prisma.io/docs/guides/database/seed-database
  */
 import { PrismaClient } from '@prisma/client';
-import { exampleMenuItems, exampleRestaurant, exampleTable } from './ExampleRestaurant';
+import {
+  exampleMenuItems,
+  exampleRestaurant,
+  exampleTable,
+} from './ExampleRestaurant';
 
 const prisma = new PrismaClient();
 

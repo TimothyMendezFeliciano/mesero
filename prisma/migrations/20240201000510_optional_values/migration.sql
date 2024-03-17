@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "Location" ALTER COLUMN "latitude" DROP NOT NULL,
-ALTER COLUMN "longitud" DROP NOT NULL,
-ALTER COLUMN "coordinates" DROP NOT NULL;
