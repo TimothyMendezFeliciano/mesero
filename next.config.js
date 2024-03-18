@@ -16,4 +16,10 @@ const config = {
   eslint: { ignoreDuringBuilds: !!process.env.CI },
 };
 
-module.exports = config;
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true
+})
+
+module.exports = withPWA(config);

@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "typeRoots": ["/types/next-auth.d.ts"],
     "module": "commonjs",
     "outDir": "dist",
     "target": "ES2019",
@@ -9,5 +10,6 @@
     "noEmit": false
   },
   "include": [
+    "/types/next-auth.d.ts",
     "next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }

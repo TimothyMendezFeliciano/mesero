@@ -25,8 +25,13 @@ export const signUpRouter = router({
 
       const result = await ctx.prisma.user.create({
         data: {
-          username, email, password: hashedPassword,
-          isAdmin: email === process.env.NEXTADMIN_EMAIL ? UserType.ADMIN : UserType.GUEST,
+          username,
+          email,
+          password: hashedPassword,
+          isAdmin:
+            email === process.env.NEXTADMIN_EMAIL
+              ? UserType.ADMIN
+              : UserType.GUEST,
         },
       });
 
