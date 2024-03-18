@@ -8,7 +8,6 @@ exports.getServerSideProps = (0, requireAuth_1.requireAuth)(async () => {
 });
 const Dashboard = () => {
     const { data } = (0, react_1.useSession)();
-    console.log('DashboardData', data);
     return (<div className="hero min-h-screen bg-base-200">
       <div className="hero-content">
         <div className="max-w-lg">

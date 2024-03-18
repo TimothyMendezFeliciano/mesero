@@ -7,10 +7,6 @@ const ____nextauth_1 = require("../pages/api/auth/[...nextauth]");
 const requireAuth = (func) => async (ctx) => {
     const session1 = await (0, next_auth_1.getServerSession)(ctx.req, ctx.res, ____nextauth_1.nextAuthOptions);
     const session2 = await (0, react_1.getSession)(ctx);
-    console.log('In a bottle', {
-        session1,
-        session2,
-    });
     if (!session1) {
         return {
             redirect: {

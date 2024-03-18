@@ -4,7 +4,8 @@ const document_1 = require("next/document");
 function Document() {
     return (<document_1.Html lang="en">
       <document_1.Head>
-        <link rel={'manifest'} href={'/manifest.json'}/>
+        <link rel="manifest" href="/manifest.json"/>
+        <meta name="theme-color" content="#000"/>
       </document_1.Head>
       <body>
         <document_1.Main />
