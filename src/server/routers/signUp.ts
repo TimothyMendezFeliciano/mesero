@@ -28,7 +28,7 @@ export const signUpRouter = router({
           username,
           email,
           password: hashedPassword,
-          isAdmin:
+          role:
             email === process.env.NEXTADMIN_EMAIL
               ? UserType.ADMIN
               : UserType.GUEST,

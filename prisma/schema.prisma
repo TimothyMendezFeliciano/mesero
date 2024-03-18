@@ -43,9 +43,9 @@ model User {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   restaurants Restaurant[]
-  isAdmin     UserType     @default(GUEST)
+  role        UserType     @default(GUEST)
 
-  @@index([isAdmin])
+  @@index([role])
   @@index([createdAt])
 }
 
