@@ -11,6 +11,7 @@ export const navigation = [
 
 export const authedNavigation = [
   {
-    name: 'Dashboard', href: '/dashboard'
-  }
-]
+    name: 'Dashboard',
+    href: '/dashboard',
+  },
+];

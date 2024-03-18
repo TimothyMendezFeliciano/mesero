@@ -52,13 +52,17 @@ export const menuItemsRouter = router({
     )
     .mutation(async ({ input }) => {
       const menuItem = await prisma.menuItems.create({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         data: {
-          RestaurantMenu: {
+          ...input,
+          category: {
             connect: {
-              id: input.id,
+              id: input.category,
             },
           },
-          ...input,
+          categoriesId: input.category,
+          restaurantMenuId: input.id,
         },
       });
 

@@ -1,17 +1,15 @@
-import { NextPage } from 'next';
-import { signOut, useSession } from 'next-auth/react';
-import { requireAuth } from '../server/requireAuth';
-
-export const getServerSideProps = requireAuth(async () => {
-  return { props: {} };
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getServerSideProps = void 0;
+const react_1 = require("next-auth/react");
+const requireAuth_1 = require("../server/requireAuth");
+exports.getServerSideProps = (0, requireAuth_1.requireAuth)(async () => {
+    return { props: {} };
 });
-
-const Dashboard: NextPage = () => {
-  const { data } = useSession();
-  console.log('DashboardData', data);
-
-  return (
-    <div className="hero min-h-screen bg-base-200">
+const Dashboard = () => {
+    const { data } = (0, react_1.useSession)();
+    console.log('DashboardData', data);
+    return (<div className="hero min-h-screen bg-base-200">
       <div className="hero-content">
         <div className="max-w-lg">
           <h1 className="text-5xl text-center font-bold leading-snug text-gray-400">
@@ -27,17 +25,12 @@ const Dashboard: NextPage = () => {
             </pre>
           </div>
           <div className="text-center">
-            <button
-              className="btn btn-secondary"
-              onClick={() => signOut({ callbackUrl: '/' })}
-            >
+            <button className="btn btn-secondary" onClick={() => (0, react_1.signOut)({ callbackUrl: '/' })}>
               Logout
             </button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
 };
-
-export default Dashboard;
+exports.default = Dashboard;
