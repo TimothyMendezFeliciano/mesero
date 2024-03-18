@@ -43,7 +43,7 @@ const basicCredentials = CredentialsProvider({
       id: user.id,
       email: user.email,
       username: user.username,
-      role: user.isAdmin,
+      role: user.role,
     };
   },
 });

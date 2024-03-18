@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
-import { requireAuth } from '../server/requireAuth';
+import { requireAuth } from '../../server/requireAuth';
 
 export const getServerSideProps = requireAuth(async () => {
   return { props: {} };
 });
 
-const Dashboard: NextPage = () => {
+const Admin: NextPage = () => {
   const { data } = useSession();
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -38,4 +38,4 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default Dashboard;
+export default Admin;
