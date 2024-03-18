@@ -16,7 +16,7 @@ const config: Config = {
   },
   plugins: [require('@tailwindcss/forms'), require('daisyui')],
   daisyui: {
-    themes: ['cyberpunk'],
+    themes: ['retro'],
   },
 };
 export default config;
