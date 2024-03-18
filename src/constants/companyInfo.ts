@@ -1,6 +1,6 @@
 export const COMPANY_INFO = {
-  name: 'Mesero',
+  name: 'MeseroPR',
   tagline: 'QR Codes that work for you.',
   description:
-    'Mesero is designed to help manage your orders with a simple QR Code.',
+    'MeseroPR is designed to help manage your orders with a simple QR Code.',
 };

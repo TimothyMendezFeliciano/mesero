@@ -8,8 +8,6 @@ export const getServerSideProps = requireAuth(async () => {
 
 const Dashboard: NextPage = () => {
   const { data } = useSession();
-  console.log('DashboardData', data);
-
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content">

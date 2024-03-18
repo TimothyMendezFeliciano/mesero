@@ -1,10 +1,11 @@
 import { authedNavigation, navigation } from '../../constants/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import type { Session } from 'next-auth';
+import { useMemo } from 'react';
 
 export default function Header() {
-  const { user } = useSession().data?.user as unknown as Session;
+  const { data } = useSession();
+  const user: any = useMemo(() => data?.user, [data]);
 
   return (
     <div className={'navbar bg-base-100'}>

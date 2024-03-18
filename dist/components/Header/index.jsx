@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const navigation_1 = require("../../constants/navigation");
 const link_1 = __importDefault(require("next/link"));
 const react_1 = require("next-auth/react");
+const react_2 = require("react");
 function Header() {
-    var _a;
-    const { user } = (_a = (0, react_1.useSession)().data) === null || _a === void 0 ? void 0 : _a.user;
+    const { data } = (0, react_1.useSession)();
+    const user = (0, react_2.useMemo)(() => data === null || data === void 0 ? void 0 : data.user, [data]);
     return (<div className={'navbar bg-base-100'}>
       <div className={'navbar-start'}>
         <div className={'dropdown'}>
