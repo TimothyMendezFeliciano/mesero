@@ -10,6 +10,10 @@ export const signUpRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { username, email, password } = input;
 
+      console.log('IWANTEVERYTHING', [
+        input, ctx,
+      ]);
+
       const exists = await ctx.prisma.user.findFirst({
         where: { email },
       });

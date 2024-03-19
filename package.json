@@ -43,6 +43,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^1.5.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
@@ -62,6 +63,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
+    "react-icons": "^5.0.1",
     "react-qr-code": "^2.0.12",
     "react-query": "^3.39.3",
     "superjson": "^1.12.4",

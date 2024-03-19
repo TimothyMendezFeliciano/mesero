@@ -28,67 +28,84 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nextAuthOptions = void 0;
 const next_auth_1 = __importDefault(require("next-auth"));
-const credentials_1 = __importDefault(require("next-auth/providers/credentials"));
-const auth_1 = require("../../../common/validation/auth");
+const google_1 = __importDefault(require("next-auth/providers/google"));
 const prisma_1 = require("../../../server/prisma");
-const argon2_1 = require("argon2");
 const process = __importStar(require("process"));
+const prisma_adapter_1 = require("@auth/prisma-adapter");
 const providers = [];
-const basicCredentials = (0, credentials_1.default)({
-    name: 'credentials',
-    credentials: {
-        email: {
-            label: 'Email',
-            type: 'email',
-            placeholder: 'user@email.com',
-        },
-        password: { label: 'Password', type: 'password' },
-    },
-    authorize: async (credentials) => {
-        const creds = await auth_1.loginSchema.parseAsync(credentials);
-        const user = await prisma_1.prisma.user.findFirst({
-            where: { email: creds.email },
-        });
-        if (!user)
-            return null;
-        const isValidPassword = await (0, argon2_1.verify)(user.password, creds.password);
-        if (!isValidPassword)
-            return null;
-        return {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            role: user.isAdmin,
-        };
-    },
+// const basicCredentials = CredentialsProvider({
+//   name: 'credentials',
+//   credentials: {
+//     email: {
+//       label: 'Email',
+//       type: 'email',
+//       placeholder: 'user@email.com',
+//     },
+//     password: { label: 'Password', type: 'password' },
+//   },
+//   authorize: async (
+//     credentials,
+//   ): Promise<null | {
+//     role: 'ADMIN' | 'EMPLOYEE' | 'OWNER' | 'GUEST';
+//     id: string;
+//     email: string;
+//     username: string;
+//   }> => {
+//     const creds = await loginSchema.parseAsync(credentials);
+//     const user = await prisma.user.findFirst({
+//       where: { email: creds.email },
+//     });
+//
+//     if (!user) return null;
+//
+//     const isValidPassword = await verify(user.password, creds.password);
+//
+//     if (!isValidPassword) return null;
+//
+//     return {
+//       id: user.id,
+//       email: user.email,
+//       username: user.username,
+//       role: user.role,
+//     };
+//   },
+// });
+const googleCredentials = (0, google_1.default)({
+    name: 'google',
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 });
-providers.push(basicCredentials);
+providers.push(googleCredentials);
 exports.nextAuthOptions = {
     // Configure one or more authentication providers
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    adapter: (0, prisma_adapter_1.PrismaAdapter)(prisma_1.prisma),
     providers,
-    callbacks: {
-        jwt: async ({ token, user }) => {
-            const newUser = user;
-            if (user) {
-                token.id = newUser.id;
-                token.email = newUser.email;
-                token.role = newUser.role;
-            }
-            return token;
-        },
-        session: async ({ session, token }) => {
-            const newSesh = session;
-            if (newSesh === null || newSesh === void 0 ? void 0 : newSesh.user) {
-                newSesh.user.role = token.role;
-            }
-            return newSesh;
-        },
-    },
-    session: {
-        strategy: 'jwt',
-        maxAge: 30 * 24 * 60 * 60,
-        updateAge: 24 * 60 * 60,
-    },
+    // callbacks: {
+    //   jwt: async ({ token, user }: { token: JWT; user: User }) => {
+    //     const newUser: any = user;
+    //     if (user) {
+    //       token.id = newUser.id;
+    //       token.email = newUser.email;
+    //       token.role = newUser.role;
+    //     }
+    //
+    //     return token;
+    //   },
+    //   session: async ({ session, token }: { session: Session; token: JWT }) => {
+    //     const newSesh: any = session;
+    //     if (newSesh?.user) {
+    //       newSesh.user.role = token.role;
+    //     }
+    //     return newSesh;
+    //   },
+    // },
+    // session: {
+    //   strategy: 'jwt',
+    //   maxAge: 30 * 24 * 60 * 60,
+    //   updateAge: 24 * 60 * 60,
+    // },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/',

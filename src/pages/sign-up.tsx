@@ -7,6 +7,8 @@ import { trpc } from '../utils/trpc';
 import { useCallback } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { FcGoogle } from 'react-icons/fc';
 
 const SignUp: NextPage = () => {
   const router = useRouter();
@@ -62,8 +64,15 @@ const SignUp: NextPage = () => {
                 {...register('password')}
               />
               <div className={'card-actions items-center justify-between'}>
-                <Link href={'/login'} className={'link'}>
-                  Acceder Login
+                <button
+                  className={'btn btn-secondary'}
+                  onClick={() => signIn('google')}
+                >
+                  <FcGoogle size={24} />
+                  Registra con Google
+                </button>
+                <Link href={'/'} className={'link'}>
+                  Ir a Pagina Principal
                 </Link>
                 <button className={'btn btn-secondary'} type={'submit'}>
                   Registrar

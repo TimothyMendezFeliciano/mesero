@@ -5,19 +5,6 @@ CREATE TYPE "PosterSource" AS ENUM ('RAW', 'GITHUB');
 CREATE TYPE "UserType" AS ENUM ('ADMIN', 'EMPLOYEE', 'OWNER', 'GUEST');
 
 -- CreateTable
-CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "isAdmin" "UserType" NOT NULL DEFAULT 'GUEST',
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Post" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -27,6 +14,19 @@ CREATE TABLE "Post" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "role" "UserType" NOT NULL DEFAULT 'GUEST',
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -107,22 +107,22 @@ CREATE TABLE "_MenuItemsToOrders" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Post_createdAt_key" ON "Post"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Post_updatedAt_key" ON "Post"("updatedAt");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE INDEX "User_isAdmin_idx" ON "User"("isAdmin");
+CREATE INDEX "User_role_idx" ON "User"("role");
 
 -- CreateIndex
 CREATE INDEX "User_createdAt_idx" ON "User"("createdAt");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_createdAt_key" ON "Post"("createdAt");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_updatedAt_key" ON "Post"("updatedAt");
 
 -- CreateIndex
 CREATE INDEX "Restaurant_name_idx" ON "Restaurant"("name");
