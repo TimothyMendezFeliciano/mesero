@@ -7,9 +7,7 @@ export const getServerSideProps = requireAuth(async () => {
 });
 
 const Admin: NextPage = (props, context) => {
-  console.log('Props and Context', {
-    props, context,
-  });
+
   const { data } = useSession();
   return (
     <div className='hero min-h-screen bg-base-200'>

@@ -80,21 +80,12 @@ export const nextAuthOptions: NextAuthOptions = {
           },
         });
 
-        console.log('RealUser', realUser);
-
         sesh = {
           ...session,
           user: realUser,
         };
       }
 
-      console.log('Succesful Sesh', {
-        session,
-        user,
-        newSession,
-        token,
-        sesh,
-      });
       return sesh;
     },
   },
