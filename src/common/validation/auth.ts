@@ -13,10 +13,28 @@ export type ILogin = z.infer<typeof loginSchema>;
 export type ISignUp = z.infer<typeof signUpSchema>;
 
 export const userSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
-  image: z.string().url(),
+  id: z
+    .string({
+      required_error: 'Id is required',
+      invalid_type_error: 'id must be a valid uuid',
+    })
+    .uuid('Must be a valid uuid'),
+  name: z.string({
+    required_error: 'Name is required',
+    invalid_type_error: 'Name must be a string',
+  }),
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
+    })
+    .email('Must be a valid email'),
+  image: z
+    .string({
+      required_error: 'Image url is required',
+      invalid_type_error: 'image url must be a string',
+    })
+    .url('Must be a valid url'),
 });
 export const accountSchema = z.object({
   provider: z.string(),
@@ -48,3 +66,11 @@ export const profileSchema = z.object({
 export type IUser = z.infer<typeof userSchema>;
 export type IAccount = z.infer<typeof accountSchema>;
 export type IProfile = z.infer<typeof profileSchema>;
+
+export const signInSchema = z.object({
+  userSchema,
+  accountSchema,
+  profileSchema,
+});
+
+export type ISignInSchema = z.infer<typeof signInSchema>;

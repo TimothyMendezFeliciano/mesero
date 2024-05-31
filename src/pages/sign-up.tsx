@@ -1,25 +1,37 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { ISignUp, signUpSchema } from '../common/validation/auth';
+import {
+  accountSchema, ISignInSchema,
+  ISignUp,
+  profileSchema,
+  userSchema,
+} from '../common/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '../utils/trpc';
 import { useCallback } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
+import * as z from 'zod';
+import { signIn } from './api/auth/[...nextauth]';
 
 const SignUp: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<ISignUp>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(
+      z.object({
+        userSchema,
+        accountSchema,
+        profileSchema,
+      }),
+    ),
   });
 
-  const { mutateAsync } = trpc.signUp.createUser.useMutation();
+  const { mutateAsync } = trpc.signIn.createUser.useMutation();
 
   const onSubmit = useCallback(
-    async (data: ISignUp) => {
+    async (data: ISignInSchema) => {
       const result = await mutateAsync(data);
 
       if (result.status === 201) {

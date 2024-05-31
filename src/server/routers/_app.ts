@@ -7,11 +7,11 @@ import { observable } from '@trpc/server/observable';
 import { clearInterval } from 'timers';
 import { restaurantRouter } from './restaurant';
 import { menuItemsRouter } from './menuItems';
-import { signUpRouter } from './signUp';
+import { signInRouter } from './user/signIn';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
-  signUp: signUpRouter,
+  signIn: signInRouter,
   post: postRouter,
   restaurant: restaurantRouter,
   menuItems: menuItemsRouter,
