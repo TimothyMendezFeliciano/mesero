@@ -5,7 +5,6 @@ export const navigation = [
   // { name: 'Example', href: '/example'},
   // { name: 'Register', href: '/register-example'}
   { name: 'Home', href: '/' },
-  { name: 'Login', href: '/login' },
   { name: 'Sign Up', href: '/sign-up' },
 ];
 
