@@ -19,7 +19,6 @@ export const signInRouter = router({
             result: exists,
           };
         } else {
-
           const updated = await createSession(userSchema, accountSchema, ctx);
 
           return {

@@ -6,6 +6,7 @@ import * as process from 'process';
 import { prisma } from '../../../server/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import Stripe from 'stripe';
+import { getUserByEmail } from '../../../controllers/User.Controller';
 
 const providers: AppProviders = [];
 
@@ -52,20 +53,20 @@ export const nextAuthOptions: NextAuthOptions = {
       let sesh: Session = session;
 
       if (session.user?.email) {
-        const realUser = await prisma.user.findUnique({
-          where: {
-            email: session.user.email,
-          },
-        });
+        const realUser = await getUserByEmail(session.user.email, prisma);
 
-        sesh = {
-          ...session,
-          user: realUser,
-        };
+        if (realUser) {
+          sesh = {
+            ...session,
+            user: realUser,
+          };
+        }
       }
 
-      sesh.user!.stripeCustomerId = user.stripeCustomerId;
-      sesh.user!.isActive = user.isActive;
+      if (user?.stripeCustomerId) {
+        sesh.user.stripeCustomerId = user.stripeCustomerId;
+        sesh.user.isActive = user.isActive;
+      }
 
       return sesh;
     },

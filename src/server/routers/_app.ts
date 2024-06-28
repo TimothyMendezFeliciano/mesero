@@ -8,6 +8,7 @@ import { clearInterval } from 'timers';
 import { restaurantRouter } from './restaurant';
 import { menuItemsRouter } from './menuItems';
 import { signInRouter } from './user/signIn';
+import { stripeRouter } from './stripe';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
@@ -15,6 +16,7 @@ export const appRouter = router({
   post: postRouter,
   restaurant: restaurantRouter,
   menuItems: menuItemsRouter,
+  stripe: stripeRouter,
 
   randomNumber: publicProcedure.subscription(() => {
     return observable<number>((emit) => {

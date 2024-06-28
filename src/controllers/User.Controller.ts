@@ -3,10 +3,9 @@
  * @type {IUser}
  * @type {IAccount}
  */
-
 import { IAccount, IUser } from '../common/validation/auth';
 import { User } from '../models/main';
-import { UserType } from '@prisma/client';
+import { PrismaClient, UserType } from '@prisma/client';
 
 /**
  * The `userExists` function checks if the user exists in the database by searching through the email.
@@ -18,7 +17,6 @@ import { UserType } from '@prisma/client';
  * @returns {Promise<User>} - Returns a Promise that gets resolved with the User object as the result.
  * If no user with the specified email exists, the Promise gets resolved with null.
  */
-
 export const userExists = async (
   userSchema: IUser,
   ctx: any,
@@ -48,7 +46,6 @@ export const userExists = async (
  * @param {any} ctx - The session context.
  * @returns {Promise<User>} - Returns a Promise that gets resolved with the newly created User object as the result.
  */
-
 export const createUser = async (
   userSchema: IUser,
   accountSchema: IAccount,
@@ -76,6 +73,29 @@ export const createUser = async (
           },
         ],
       },
+    },
+  });
+};
+
+/**
+ * The `getUserByEmail` function retrieves a user from the database by email.
+ * It is an async function that returns a promise of User type.
+ * @public
+ * @async
+ * @param {string} email - The email of the user to retrieve.
+ * @param {PrismaClient} prisma - Instance of PrismaClient
+ * @returns {Promise<User | null>} - Returns a Promise that gets resolved with the User object as the result.
+ * If no user with the specified email exists, the Promise gets resolved with null.
+ */
+export const getUserByEmail = async (
+  email: string,
+  prisma: PrismaClient,
+): Promise<User | null> => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  return prisma.user.findUnique({
+    where: {
+      email: email,
     },
   });
 };
