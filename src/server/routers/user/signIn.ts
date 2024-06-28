@@ -1,26 +1,15 @@
 import { publicProcedure, router } from '../../trpc';
 import { signInSchema } from '../../../common/validation/auth';
-import { UserType } from '@prisma/client';
+import { createUser, userExists } from '../../../controllers/User.Controller';
+import { createSession } from '../../../controllers/Session.Controller';
 
 export const signInRouter = router({
   createUser: publicProcedure
     .input(signInSchema)
     .mutation(async ({ input, ctx }) => {
-      const { userSchema, accountSchema, profileSchema } = input;
+      const { userSchema, accountSchema } = input;
 
-      const exists = await ctx.prisma.user.findFirst({
-        where: { email: userSchema.email },
-        include: {
-          accounts: true,
-          sessions: {
-            take: 1,
-            orderBy: {
-              expires: 'desc',
-            },
-          },
-          restaurants: true,
-        },
-      });
+      const exists = await userExists(userSchema, ctx);
 
       if (exists) {
         if (exists.sessions[0].expires > Date.now()) {
@@ -30,18 +19,7 @@ export const signInRouter = router({
             result: exists,
           };
         } else {
-          const updated = await ctx.prisma.session.create({
-            data: {
-              id: accountSchema.id_token,
-              sessionToken: accountSchema.id_token,
-              expires: accountSchema.expires_at,
-              user: {
-                connect: {
-                  email: userSchema.email,
-                },
-              },
-            },
-          });
+          const updated = await createSession(userSchema, accountSchema, ctx);
 
           return {
             status: 200,
@@ -50,37 +28,13 @@ export const signInRouter = router({
           };
         }
       } else {
-        const result = await ctx.prisma.user.create({
-          data: {
-            email: userSchema.email,
-            image: userSchema.image,
-            role:
-              userSchema.email === process.env.NEXTADMIN_EMAIL
-                ? UserType.ADMIN
-                : UserType.GUEST,
-            accounts: {
-              create: {
-                ...accountSchema,
-              },
-            },
-            sessions: {
-              create: [
-                {
-                  id: accountSchema.id_token,
-                  sessionToken: accountSchema.id_token,
-                  expires: accountSchema.expires_at,
-                },
-              ],
-            },
-          },
-        });
+        const result = await createUser(userSchema, accountSchema, ctx);
 
         return {
           status: 201,
-          message: 'Account Created Succesfully',
+          message: 'Account Created Successfully',
           result: result,
         };
       }
     }),
-  // createSession: publicProcedure.input().mutation(),
 });

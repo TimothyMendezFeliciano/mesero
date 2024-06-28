@@ -17,11 +17,11 @@ const Home: NextPage = () => {
           <div className="mt-6 flex items-center gap-x-6">
             <a
               href={`${
-                navigation.find((item) => item.name === 'Register')?.href
+                navigation.find((item) => item.name === 'Sign Up')?.href
               }`}
               className="btnNormal"
             >
-              Register
+              Registrar / Iniciar Sesion
             </a>
             <a
               href={`${

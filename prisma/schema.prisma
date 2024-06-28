@@ -90,14 +90,16 @@ model Authenticator {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  name          String?
-  email         String?         @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Authenticator Authenticator[]
+  id               String          @id @default(uuid())
+  name             String?
+  email            String?         @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  Authenticator    Authenticator[]
+  stripeCustomerId String?         @unique
+  isActive         Boolean         @default(false)
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -107,6 +109,7 @@ model User {
   @@index([name])
   @@index([role])
   @@index([createdAt])
+  @@index([isActive])
 }
 
 model Restaurant {

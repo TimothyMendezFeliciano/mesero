@@ -10,6 +10,8 @@ export const requireAuth =
       nextAuthOptions,
     );
 
+    console.log('Session Auth', session1);
+
     if (!session1) {
       return {
         redirect: {
