@@ -1,6 +1,5 @@
 import { requireAuth } from '../../server/requireAuth';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import Layout from '../../components/Layout';
 import {
   HeaderWithThreeColumns,

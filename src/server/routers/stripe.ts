@@ -69,7 +69,6 @@ export const stripeRouter = router({
           apiVersion: '2024-04-10',
         });
 
-        console.log('Checkout Initiated', input);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         const checkoutSession = await stripe.checkout.sessions.create({
