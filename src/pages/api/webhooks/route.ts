@@ -17,6 +17,10 @@ export default async function webhookHandler(
   res: NextApiResponse,
 ) {
   // We are going to add things here
+
+  const readable = req.read();
+  const buffer = Buffer.from(readable);
+
   try {
     const sig = req.headers['stripe-signature']!;
 
@@ -25,7 +29,7 @@ export default async function webhookHandler(
     //   Rest of the code goes here
 
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+      event = stripe.webhooks.constructEvent(buffer, sig, webhookSecret);
 
       const subscription = event.data.object as Stripe.Subscription;
 
@@ -85,13 +89,5 @@ export default async function webhookHandler(
           message: 'Method Not Allowed',
         },
       });
-    // return NextResponse.json(
-    //   {
-    //     error: {
-    //       message: 'Method Not Allowed',
-    //     },
-    //   },
-    //   { status: 405 },
-    // ).headers.set('Allow', 'POST');
   }
 }
