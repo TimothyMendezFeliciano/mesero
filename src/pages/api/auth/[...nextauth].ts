@@ -5,6 +5,8 @@ import Facebook from 'next-auth/providers/facebook';
 import * as process from 'process';
 import { prisma } from '../../../server/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import Stripe from 'stripe';
+import { getUserByEmail } from '../../../controllers/User.Controller';
 
 const providers: AppProviders = [];
 
@@ -51,16 +53,19 @@ export const nextAuthOptions: NextAuthOptions = {
       let sesh: Session = session;
 
       if (session.user?.email) {
-        const realUser = await prisma.user.findUnique({
-          where: {
-            email: session.user.email,
-          },
-        });
+        const realUser = await getUserByEmail(session.user.email, prisma);
 
-        sesh = {
-          ...session,
-          user: realUser,
-        };
+        if (realUser) {
+          sesh = {
+            ...session,
+            user: realUser,
+          };
+        }
+      }
+
+      if (user?.stripeCustomerId) {
+        sesh.user.stripeCustomerId = user.stripeCustomerId;
+        sesh.user.isActive = user.isActive;
       }
 
       return sesh;
@@ -76,6 +81,29 @@ export const nextAuthOptions: NextAuthOptions = {
     signOut: '/',
     signIn: '/dashboard',
     newUser: '/dashboard/admin',
+  },
+  events: {
+    createUser: async ({ user }) => {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: '2024-04-10',
+      });
+
+      await stripe.customers
+        .create({
+          email: user.email!,
+          name: user.name!,
+        })
+        .then(async (customer) => {
+          return prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              stripeCustomerId: customer.id,
+            },
+          });
+        });
+    },
   },
 };
 export default NextAuth(nextAuthOptions);
