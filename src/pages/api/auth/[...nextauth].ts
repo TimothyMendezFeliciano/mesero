@@ -46,10 +46,10 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers,
   callbacks: {
-    signIn: async ({ user, account, profile, email, credentials }) => {
+    signIn: async ({ user }) => {
       return !!user;
     },
-    session: async ({ session, user, newSession, token, trigger }) => {
+    session: async ({ session, user }) => {
       let sesh: Session = session;
 
       if (session.user?.email) {
