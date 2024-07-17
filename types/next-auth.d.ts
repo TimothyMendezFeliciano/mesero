@@ -1,5 +1,6 @@
 import { UserType } from '@prisma/client';
-import { DefaultUser } from 'next-auth';
+import { DefaultUser, User } from 'next-auth';
+import { AdapterUser } from 'next-auth/adapters';
 
 declare module 'next-auth' {
   interface Session {
@@ -21,6 +22,10 @@ declare module 'next-auth' {
     stripeCustomerId?: string;
     isActive: boolean;
   }
+}
+
+declare module 'next-auth/adapters' {
+  type AdapterUser = User;
 }
 
 declare module 'next-auth/jwt' {

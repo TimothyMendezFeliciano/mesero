@@ -72,7 +72,7 @@ exports.nextAuthOptions = {
         signIn: async ({ user }) => {
             return !!user;
         },
-        session: async ({ session, user }) => {
+        session: async ({ session, user, }) => {
             var _a;
             let sesh = session;
             if ((_a = session.user) === null || _a === void 0 ? void 0 : _a.email) {
@@ -84,7 +84,7 @@ exports.nextAuthOptions = {
                     };
                 }
             }
-            if (user === null || user === void 0 ? void 0 : user.stripeCustomerId) {
+            if ((sesh === null || sesh === void 0 ? void 0 : sesh.user) && (user === null || user === void 0 ? void 0 : user.stripeCustomerId)) {
                 sesh.user.stripeCustomerId = user.stripeCustomerId;
                 sesh.user.isActive = user.isActive;
             }

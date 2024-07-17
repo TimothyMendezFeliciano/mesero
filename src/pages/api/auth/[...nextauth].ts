@@ -7,6 +7,7 @@ import { prisma } from '../../../server/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import Stripe from 'stripe';
 import { getUserByEmail } from '../../../controllers/User.Controller';
+import { AdapterUser } from 'next-auth/adapters';
 
 const providers: AppProviders = [];
 
@@ -46,10 +47,16 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers,
   callbacks: {
-    signIn: async ({ user }: { user: User }) => {
+    signIn: async ({ user }: { user: User | AdapterUser }) => {
       return !!user;
     },
-    session: async ({ session, user }: { session: Session; user: User }) => {
+    session: async ({
+      session,
+      user,
+    }: {
+      session: Session;
+      user: AdapterUser;
+    }) => {
       let sesh: Session = session;
 
       if (session.user?.email) {
@@ -63,7 +70,7 @@ export const nextAuthOptions: NextAuthOptions = {
         }
       }
 
-      if (user?.stripeCustomerId) {
+      if (sesh?.user && user?.stripeCustomerId) {
         sesh.user.stripeCustomerId = user.stripeCustomerId;
         sesh.user.isActive = user.isActive;
       }
