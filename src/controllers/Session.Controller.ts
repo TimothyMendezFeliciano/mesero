@@ -21,7 +21,8 @@ import { Session } from '../models/main';
 export const createSession = async (
   userSchema: IUser,
   accountSchema: IAccount,
-  ctx): Promise<Session> => {
+  ctx,
+): Promise<Session> => {
   /**
    * This method will create a new session with the given accountSchema and userSchema
    * @see IAccount
