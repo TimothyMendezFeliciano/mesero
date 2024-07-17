@@ -18,8 +18,8 @@ const Home = () => {
             {companyInfo_1.COMPANY_INFO.description}
           </p>
           <div className="mt-6 flex items-center gap-x-6">
-            <a href={`${(_a = navigation_1.navigation.find((item) => item.name === 'Register')) === null || _a === void 0 ? void 0 : _a.href}`} className="btnNormal">
-              Register
+            <a href={`${(_a = navigation_1.navigation.find((item) => item.name === 'Sign Up')) === null || _a === void 0 ? void 0 : _a.href}`} className="btnNormal">
+              Registrar / Iniciar Sesion
             </a>
             <a href={`${(_b = navigation_1.navigation.find((item) => item.name === 'Example')) === null || _b === void 0 ? void 0 : _b.href}`} className="text-sm font-semibold leading-6 text-gray-900">
               See example <span aria-hidden="true">→</span>

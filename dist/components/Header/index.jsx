@@ -19,7 +19,7 @@ function Header() {
             </svg>
           </div>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            {(user === null || user === void 0 ? void 0 : user.role) !== 'GUEST' &&
+            {(user === null || user === void 0 ? void 0 : user.role) === 'GUEST' &&
             navigation_1.authedNavigation.map((item) => (<li key={item.name}>
                   <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
                     {item.name}

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./types"],
+    "typeRoots": ["./types/next-auth.d.ts"],
     "target": "es5",
     "lib": [
       "dom",

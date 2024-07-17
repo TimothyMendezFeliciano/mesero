@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
+import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
 import type { AppProviders } from 'next-auth/providers';
 import GoogleProvider from 'next-auth/providers/google';
 import Facebook from 'next-auth/providers/facebook';
@@ -46,10 +46,10 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers,
   callbacks: {
-    signIn: async ({ user }) => {
+    signIn: async ({ user }: { user: User }) => {
       return !!user;
     },
-    session: async ({ session, user }) => {
+    session: async ({ session, user }: { session: Session; user: User }) => {
       let sesh: Session = session;
 
       if (session.user?.email) {
