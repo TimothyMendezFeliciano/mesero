@@ -6,8 +6,8 @@ export const tiers = [
   {
     name: 'Equipo Pequeño',
     id: 'tier-basic',
-    href: 'prod_QHAtBpFEjFYwtv',
-    priceId: 'price_1PQcYAP08TtvTynpEPMh2hcg',
+    href: 'prod_QUXUi8O8LJkaQ1',
+    priceId: 'price_1PdYPOP08TtvTynpnQiDDFkE',
     price: { monthly: '$15', annually: '$12' },
     description: 'Everything necessary to get started.',
     features: [
@@ -20,9 +20,9 @@ export const tiers = [
   {
     name: 'Equipo Mediano',
     id: 'tier-essential',
-    href: 'prod_QHBC8COpBMgvog',
-    priceId: 'price_1PQcqIP08TtvTynp5Ulu95Pk',
-    price: { monthly: '$30', annually: '$24' },
+    href: 'prod_QUXUv0xwuHY7p6',
+    priceId: 'price_1PdYPLP08TtvTynpI6hS2zEd',
+    price: { monthly: '$20', annually: '$24' },
     description:
       'Everything in Basic, plus essential tools for growing your business.',
     features: [
@@ -36,8 +36,8 @@ export const tiers = [
   {
     name: 'Equipo Grande',
     id: 'tier-growth',
-    href: 'prod_QMPubtgAb1fw0O',
-    priceId: 'price_1PVh4QP08TtvTynprD9PvlMP',
+    href: 'prod_QUXUBI88d7zepN',
+    priceId: 'price_1PdYPHP08TtvTynpBL4r3Non',
     price: { monthly: '$60', annually: '$48' },
     description:
       'Everything in Essential, plus collaboration tools and deeper insights.',
@@ -101,9 +101,9 @@ export function Tier({
           /month
         </span>
       </p>
-      <p className="mt-3 text-sm leading-6 text-gray-500">
-        {price.annually} per month if paid annually
-      </p>
+      {/*<p className="mt-3 text-sm leading-6 text-gray-500">*/}
+      {/*  {price.annually} per month if paid annually*/}
+      {/*</p>*/}
       <button
         onClick={() => handleCreateCheckoutSession(priceId)}
         aria-describedby={id}
