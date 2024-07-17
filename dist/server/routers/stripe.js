@@ -66,7 +66,10 @@ exports.stripeRouter = (0, trpc_1.router)({
             .min(1),
     }))
         .mutation(async ({ input, ctx, }) => {
-        var _a;
+        var _a, _b;
+        if (typeof ((_a = ctx.session) === null || _a === void 0 ? void 0 : _a.user) === 'undefined') {
+            throw new Error('Invalid session');
+        }
         const session = ctx.session;
         if (session === null) {
             throw new server_1.TRPCError({
@@ -74,7 +77,9 @@ exports.stripeRouter = (0, trpc_1.router)({
                 message: 'Session Not Found',
             });
         }
-        if (!((_a = session === null || session === void 0 ? void 0 : session.user) === null || _a === void 0 ? void 0 : _a.stripeCustomerId)) {
+        if ((session === null || session === void 0 ? void 0 : session.user) &&
+            !('stripeCustomerId' in session.user) &&
+            !((_b = session === null || session === void 0 ? void 0 : session.user) === null || _b === void 0 ? void 0 : _b.stripeCustomerId)) {
             throw new server_1.TRPCError({
                 code: 'UNAUTHORIZED',
                 message: 'No estas registrado como cliente.',

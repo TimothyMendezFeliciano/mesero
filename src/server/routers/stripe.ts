@@ -52,15 +52,23 @@ export const stripeRouter = router({
         message: string;
         result: Stripe.Response<Stripe.Checkout.Session>;
       }> => {
-        const session: Session | null = ctx.session;
+        if (typeof ctx.session?.user === 'undefined') {
+          throw new Error('Invalid session');
+        }
 
+        const session: Session = ctx.session;
         if (session === null) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Session Not Found',
           });
         }
-        if (!session?.user?.stripeCustomerId) {
+
+        if (
+          session?.user &&
+          !('stripeCustomerId' in session.user) &&
+          !session?.user?.stripeCustomerId
+        ) {
           throw new TRPCError({
             code: 'UNAUTHORIZED',
             message: 'No estas registrado como cliente.',
