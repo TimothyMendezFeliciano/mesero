@@ -79,6 +79,8 @@ exports.stripeRouter = (0, trpc_1.router)({
         }
         if ((session === null || session === void 0 ? void 0 : session.user) &&
             !('stripeCustomerId' in session.user) &&
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             !((_b = session === null || session === void 0 ? void 0 : session.user) === null || _b === void 0 ? void 0 : _b.stripeCustomerId)) {
             throw new server_1.TRPCError({
                 code: 'UNAUTHORIZED',
@@ -98,6 +100,8 @@ exports.stripeRouter = (0, trpc_1.router)({
         // @ts-expect-error
         const checkoutSession = await stripe.checkout.sessions.create({
             mode: 'subscription',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             customer: session.user.stripeCustomerId,
             line_items: [
                 {

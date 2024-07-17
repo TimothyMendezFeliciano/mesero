@@ -67,6 +67,8 @@ export const stripeRouter = router({
         if (
           session?.user &&
           !('stripeCustomerId' in session.user) &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           !session?.user?.stripeCustomerId
         ) {
           throw new TRPCError({
@@ -89,6 +91,8 @@ export const stripeRouter = router({
         // @ts-expect-error
         const checkoutSession = await stripe.checkout.sessions.create({
           mode: 'subscription',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           customer: session.user.stripeCustomerId,
           line_items: [
             {
