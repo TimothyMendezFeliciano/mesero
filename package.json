@@ -7,7 +7,7 @@
   },
   "scripts": {
     "prebuild": "prisma generate && prisma migrate deploy",
-    "build:1-next": "cross-env NODE_ENV=production next build",
+    "build:1-next": "cross-env next build",
     "build:2-server": "tsc --project tsconfig.server.json",
     "build": "run-s build:*",
     "dev:wss": "cross-env PORT=3001 tsx watch src/server/wssDevServer.ts --tsconfig tsconfig.server.json ",
@@ -22,7 +22,7 @@
     "generate": "prisma generate",
     "migrate-dev": "prisma migrate dev",
     "migrate": "prisma migrate deploy",
-    "start": "cross-env NODE_ENV=production node dist/server/prodServer.js",
+    "start": "cross-env node dist/server/prodServer.js",
     "studio": "prisma studio",
     "lint": "eslint --cache --ext .js,.ts,.tsx src --fix",
     "lint-fix": "pnpm lint --fix",
