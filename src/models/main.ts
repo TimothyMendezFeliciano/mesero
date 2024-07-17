@@ -1,11 +1,4 @@
-// export interface UserType {
-//   ADMIN: 'ADMIN';
-//   EMPLOYEE: 'EMPLOYEE';
-//   OWNER: 'OWNER';
-//   GUEST: 'GUEST';
-// }
-
-import { UserType } from '.prisma/client';
+import { UserType } from '@prisma/client';
 
 export interface Account {
   userId: string;
