@@ -72,5 +72,5 @@ exports.trpc = (0, next_1.createTRPCNext)({
     /**
      * @link https://trpc.io/docs/v11/ssr
      */
-    ssr: true,
+    ssr: false,
 });
