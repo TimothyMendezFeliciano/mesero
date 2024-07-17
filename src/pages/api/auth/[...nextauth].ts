@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
+import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
 import type { AppProviders } from 'next-auth/providers';
 import GoogleProvider from 'next-auth/providers/google';
 import Facebook from 'next-auth/providers/facebook';
@@ -7,6 +7,7 @@ import { prisma } from '../../../server/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import Stripe from 'stripe';
 import { getUserByEmail } from '../../../controllers/User.Controller';
+import { AdapterUser } from 'next-auth/adapters';
 
 const providers: AppProviders = [];
 
@@ -46,7 +47,7 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers,
   callbacks: {
-    signIn: async ({ user }) => {
+    signIn: async ({ user }: { user: User | AdapterUser }) => {
       return !!user;
     },
     session: async ({ session, user }) => {
@@ -63,9 +64,16 @@ export const nextAuthOptions: NextAuthOptions = {
         }
       }
 
-      if (user?.stripeCustomerId) {
-        sesh.user.stripeCustomerId = user.stripeCustomerId;
-        sesh.user.isActive = user.isActive;
+      if (sesh?.user && 'stripeCustomerId' in user && user?.stripeCustomerId) {
+        if (
+          'stripeCustomerId' in user &&
+          'isActive' in user &&
+          'stripeCustomerId' in sesh?.user &&
+          'isActive' in sesh.user
+        ) {
+          sesh.user.stripeCustomerId = user.stripeCustomerId;
+          sesh.user.isActive = user.isActive;
+        }
       }
 
       return sesh;

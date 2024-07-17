@@ -72,7 +72,6 @@ interface HeaderWithThreeColumnsProps {
 export function Tier({
   name,
   id,
-  href,
   price,
   description,
   features,

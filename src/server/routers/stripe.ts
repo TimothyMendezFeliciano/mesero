@@ -8,6 +8,7 @@ import { authedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import Stripe from 'stripe';
 import * as z from 'zod';
+import { Session } from 'next-auth';
 
 /**
  * The `stripeRouter` object exports a tRPC-router configuration that includes a `checkout` mutation.
@@ -51,8 +52,25 @@ export const stripeRouter = router({
         message: string;
         result: Stripe.Response<Stripe.Checkout.Session>;
       }> => {
-        const session = ctx.session;
-        if (!session?.user?.stripeCustomerId) {
+        if (typeof ctx.session?.user === 'undefined') {
+          throw new Error('Invalid session');
+        }
+
+        const session: Session = ctx.session;
+        if (session === null) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Session Not Found',
+          });
+        }
+
+        if (
+          session?.user &&
+          !('stripeCustomerId' in session.user) &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          !session?.user?.stripeCustomerId
+        ) {
           throw new TRPCError({
             code: 'UNAUTHORIZED',
             message: 'No estas registrado como cliente.',
@@ -73,6 +91,8 @@ export const stripeRouter = router({
         // @ts-expect-error
         const checkoutSession = await stripe.checkout.sessions.create({
           mode: 'subscription',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           customer: session.user.stripeCustomerId,
           line_items: [
             {

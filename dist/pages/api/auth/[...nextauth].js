@@ -29,87 +29,105 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.nextAuthOptions = void 0;
 const next_auth_1 = __importDefault(require("next-auth"));
 const google_1 = __importDefault(require("next-auth/providers/google"));
-const prisma_1 = require("../../../server/prisma");
+const facebook_1 = __importDefault(require("next-auth/providers/facebook"));
 const process = __importStar(require("process"));
+const prisma_1 = require("../../../server/prisma");
 const prisma_adapter_1 = require("@auth/prisma-adapter");
+const stripe_1 = __importDefault(require("stripe"));
+const User_Controller_1 = require("../../../controllers/User.Controller");
 const providers = [];
-// const basicCredentials = CredentialsProvider({
-//   name: 'credentials',
-//   credentials: {
-//     email: {
-//       label: 'Email',
-//       type: 'email',
-//       placeholder: 'user@email.com',
-//     },
-//     password: { label: 'Password', type: 'password' },
-//   },
-//   authorize: async (
-//     credentials,
-//   ): Promise<null | {
-//     role: 'ADMIN' | 'EMPLOYEE' | 'OWNER' | 'GUEST';
-//     id: string;
-//     email: string;
-//     username: string;
-//   }> => {
-//     const creds = await loginSchema.parseAsync(credentials);
-//     const user = await prisma.user.findFirst({
-//       where: { email: creds.email },
-//     });
-//
-//     if (!user) return null;
-//
-//     const isValidPassword = await verify(user.password, creds.password);
-//
-//     if (!isValidPassword) return null;
-//
-//     return {
-//       id: user.id,
-//       email: user.email,
-//       username: user.username,
-//       role: user.role,
-//     };
-//   },
-// });
 const googleCredentials = (0, google_1.default)({
     name: 'google',
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    authorization: {
+        params: {
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
+        },
+    },
+});
+const facebookCredentials = (0, facebook_1.default)({
+    name: 'facebook',
+    clientId: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    authorization: {
+        params: {
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
+        },
+    },
 });
 providers.push(googleCredentials);
+providers.push(facebookCredentials);
 exports.nextAuthOptions = {
     // Configure one or more authentication providers
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     adapter: (0, prisma_adapter_1.PrismaAdapter)(prisma_1.prisma),
     providers,
-    // callbacks: {
-    //   jwt: async ({ token, user }: { token: JWT; user: User }) => {
-    //     const newUser: any = user;
-    //     if (user) {
-    //       token.id = newUser.id;
-    //       token.email = newUser.email;
-    //       token.role = newUser.role;
-    //     }
-    //
-    //     return token;
-    //   },
-    //   session: async ({ session, token }: { session: Session; token: JWT }) => {
-    //     const newSesh: any = session;
-    //     if (newSesh?.user) {
-    //       newSesh.user.role = token.role;
-    //     }
-    //     return newSesh;
-    //   },
-    // },
-    // session: {
-    //   strategy: 'jwt',
-    //   maxAge: 30 * 24 * 60 * 60,
-    //   updateAge: 24 * 60 * 60,
-    // },
+    callbacks: {
+        signIn: async ({ user }) => {
+            return !!user;
+        },
+        session: async ({ session, user }) => {
+            var _a;
+            let sesh = session;
+            if ((_a = session.user) === null || _a === void 0 ? void 0 : _a.email) {
+                const realUser = await (0, User_Controller_1.getUserByEmail)(session.user.email, prisma_1.prisma);
+                if (realUser) {
+                    sesh = {
+                        ...session,
+                        user: realUser,
+                    };
+                }
+            }
+            if ((sesh === null || sesh === void 0 ? void 0 : sesh.user) && 'stripeCustomerId' in user && (user === null || user === void 0 ? void 0 : user.stripeCustomerId)) {
+                if ('stripeCustomerId' in user &&
+                    'isActive' in user &&
+                    'stripeCustomerId' in (sesh === null || sesh === void 0 ? void 0 : sesh.user) &&
+                    'isActive' in sesh.user) {
+                    sesh.user.stripeCustomerId = user.stripeCustomerId;
+                    sesh.user.isActive = user.isActive;
+                }
+            }
+            return sesh;
+        },
+    },
+    session: {
+        strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60,
+        updateAge: 24 * 60 * 60,
+    },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/',
-        newUser: '/sign-up',
+        signOut: '/',
+        signIn: '/dashboard',
+        newUser: '/dashboard/admin',
+    },
+    events: {
+        createUser: async ({ user }) => {
+            const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
+                apiVersion: '2024-04-10',
+            });
+            await stripe.customers
+                .create({
+                email: user.email,
+                name: user.name,
+            })
+                .then(async (customer) => {
+                return prisma_1.prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        stripeCustomerId: customer.id,
+                    },
+                });
+            });
+        },
     },
 };
 exports.default = (0, next_auth_1.default)(exports.nextAuthOptions);
