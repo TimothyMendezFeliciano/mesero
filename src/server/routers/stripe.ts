@@ -8,6 +8,7 @@ import { authedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import Stripe from 'stripe';
 import * as z from 'zod';
+import { Session } from 'next-auth';
 
 /**
  * The `stripeRouter` object exports a tRPC-router configuration that includes a `checkout` mutation.
@@ -51,7 +52,14 @@ export const stripeRouter = router({
         message: string;
         result: Stripe.Response<Stripe.Checkout.Session>;
       }> => {
-        const session = ctx.session;
+        const session: Session | null = ctx.session;
+
+        if (session === null) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Session Not Found',
+          });
+        }
         if (!session?.user?.stripeCustomerId) {
           throw new TRPCError({
             code: 'UNAUTHORIZED',

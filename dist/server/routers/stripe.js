@@ -68,6 +68,12 @@ exports.stripeRouter = (0, trpc_1.router)({
         .mutation(async ({ input, ctx, }) => {
         var _a;
         const session = ctx.session;
+        if (session === null) {
+            throw new server_1.TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Session Not Found',
+            });
+        }
         if (!((_a = session === null || session === void 0 ? void 0 : session.user) === null || _a === void 0 ? void 0 : _a.stripeCustomerId)) {
             throw new server_1.TRPCError({
                 code: 'UNAUTHORIZED',

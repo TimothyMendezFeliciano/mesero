@@ -50,13 +50,7 @@ export const nextAuthOptions: NextAuthOptions = {
     signIn: async ({ user }: { user: User | AdapterUser }) => {
       return !!user;
     },
-    session: async ({
-      session,
-      user,
-    }: {
-      session: Session;
-      user: AdapterUser;
-    }) => {
+    session: async ({ session, user }) => {
       let sesh: Session = session;
 
       if (session.user?.email) {
@@ -70,9 +64,16 @@ export const nextAuthOptions: NextAuthOptions = {
         }
       }
 
-      if (sesh?.user && user?.stripeCustomerId) {
-        sesh.user.stripeCustomerId = user.stripeCustomerId;
-        sesh.user.isActive = user.isActive;
+      if (sesh?.user && 'stripeCustomerId' in user && user?.stripeCustomerId) {
+        if (
+          'stripeCustomerId' in user &&
+          'isActive' in user &&
+          'stripeCustomerId' in sesh?.user &&
+          'isActive' in sesh.user
+        ) {
+          sesh.user.stripeCustomerId = user.stripeCustomerId;
+          sesh.user.isActive = user.isActive;
+        }
       }
 
       return sesh;
