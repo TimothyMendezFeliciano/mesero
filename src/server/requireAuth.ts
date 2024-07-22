@@ -1,6 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../pages/api/auth/[...nextauth]';
+import { UserType } from '@prisma/client';
 
 export const requireAuth =
   (func: GetServerSideProps) => async (ctx: GetServerSidePropsContext) => {
@@ -9,6 +10,41 @@ export const requireAuth =
       ctx.res,
       nextAuthOptions,
     );
+
+    if (session1.user.role === UserType.OWNER && !session1.user.isActive) {
+      return {
+        redirect: {
+          destination: '/dashboard',
+          permanent: false,
+        },
+      };
+    }
+
+    if (
+      session1.user.role === UserType.OWNER &&
+      session1.user.isActive &&
+      ctx.resolvedUrl === '/dashboard'
+    ) {
+      return {
+        redirect: {
+          destination: '/dashboard/admin',
+          permanent: false,
+        },
+      };
+    }
+
+    if (
+      session1.user.role === UserType.EMPLOYEE &&
+      session1.user.isActive &&
+      ctx.resolvedUrl === '/dashboard/employee'
+    ) {
+      return {
+        redirect: {
+          destination: '/dashboard/admin',
+          permanent: false,
+        },
+      };
+    }
 
     if (!session1) {
       return {
