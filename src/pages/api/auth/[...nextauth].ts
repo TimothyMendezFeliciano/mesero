@@ -13,8 +13,8 @@ const providers: AppProviders = [];
 
 const googleCredentials = GoogleProvider({
   name: 'google',
-  clientId: process.env.GOOGLE_CLIENT_ID!,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+  clientId: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   authorization: {
     params: {
       prompt: 'consent',
@@ -26,8 +26,8 @@ const googleCredentials = GoogleProvider({
 
 const facebookCredentials = Facebook({
   name: 'facebook',
-  clientId: process.env.FACEBOOK_CLIENT_ID!,
-  clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+  clientId: process.env.FACEBOOK_CLIENT_ID,
+  clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
   authorization: {
     params: {
       prompt: 'consent',
@@ -53,29 +53,37 @@ export const nextAuthOptions: NextAuthOptions = {
     session: async ({ session, user }) => {
       let sesh: Session = session;
 
-      if (session.user?.email) {
-        const realUser = await getUserByEmail(session.user.email, prisma);
+      try {
+        if (session.user?.email) {
+          const realUser = await getUserByEmail(session.user.email, prisma);
 
-        if (realUser) {
-          sesh = {
-            ...session,
-            user: realUser,
-          };
+          if (realUser) {
+            sesh = {
+              ...session,
+              user: realUser,
+            };
+          }
         }
-      }
 
-      if (sesh?.user && 'stripeCustomerId' in user && user?.stripeCustomerId) {
         if (
+          sesh?.user &&
           'stripeCustomerId' in user &&
-          'isActive' in user &&
-          'stripeCustomerId' in sesh?.user &&
-          'isActive' in sesh.user
+          user?.stripeCustomerId
         ) {
-          sesh.user.stripeCustomerId = user.stripeCustomerId;
-          sesh.user.isActive = user.isActive;
+          if (
+            'stripeCustomerId' in user &&
+            'isActive' in user &&
+            'stripeCustomerId' in sesh?.user &&
+            'isActive' in sesh.user
+          ) {
+            sesh.user.stripeCustomerId = user.stripeCustomerId;
+            sesh.user.isActive = user.isActive;
+          }
         }
+      } catch (e) {
+        console.log('Ichigo', typeof e);
+        console.error('Ichigo 2', e);
       }
-
       return sesh;
     },
   },
@@ -88,18 +96,18 @@ export const nextAuthOptions: NextAuthOptions = {
   pages: {
     signOut: '/',
     signIn: '/dashboard',
-    newUser: '/dashboard/admin',
+    newUser: '/dashboard',
   },
   events: {
     createUser: async ({ user }) => {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         apiVersion: '2024-04-10',
       });
 
       await stripe.customers
         .create({
-          email: user.email!,
-          name: user.name!,
+          email: user.email,
+          name: user.name,
         })
         .then(async (customer) => {
           return prisma.user.update({
