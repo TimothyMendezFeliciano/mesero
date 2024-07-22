@@ -11,13 +11,7 @@ export const requireAuth =
       nextAuthOptions,
     );
 
-    console.log('TheURL!?!?!', {
-      params: ctx.params,
-      query: ctx.query,
-      resolvedUrl: ctx.resolvedUrl,
-    });
-
-    if (session1.user.role === 'OWNER' && !session1.user.isActive) {
+    if (session1.user.role === UserType.OWNER && !session1.user.isActive) {
       return {
         redirect: {
           destination: '/dashboard',
