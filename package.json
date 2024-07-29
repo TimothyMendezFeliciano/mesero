@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.0",
+    "@bitnoi.se/react-scheduler": "^0.2.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
@@ -69,6 +70,7 @@
     "react-qr-code": "^2.0.12",
     "react-query": "^3.39.3",
     "stripe": "^15.10.0",
+    "styled-components": "^6.1.12",
     "superjson": "^1.12.4",
     "tsx": "^4.0.0",
     "ws": "^8.0.0",

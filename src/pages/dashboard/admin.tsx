@@ -12,6 +12,8 @@ import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
 import { useMemo } from 'react';
 import { User } from '../../models/main';
+import BitNoiseScheduler from '../../components/SchedulerCalendar/BitNoiseScheduler';
+import Room from '../../components/Chat/Room';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -35,13 +37,15 @@ const Admin: NextPage = (props, context) => {
   );
 
   return (
-    <Layout>
-      <DashboardLayout
-        TopComponent={<DashboardBanner admin={session.user as User} />}
-        LeftComponent={<h1>This is a Left Component</h1>}
-        MainComponent={<h1>This is a Main Component</h1>}
-      />
-    </Layout>
+    <>
+      <Layout>
+        <DashboardLayout
+          TopComponent={<DashboardBanner admin={session.user as User} />}
+          LeftComponent={<Room />}
+          MainComponent={<BitNoiseScheduler />}
+        />
+      </Layout>
+    </>
   );
 };
 
