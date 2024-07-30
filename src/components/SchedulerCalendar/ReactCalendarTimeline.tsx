@@ -40,19 +40,19 @@ export default function ReactCalendarTimeline() {
       keys={keys}
       sidebarContent={<div>Above The Left</div>}
       itemsSorted
-      itemTouchSendsClick={false}
+      itemTouchSendsClick={true}
       stackItems
       itemHeightRatio={0.75}
       showCursorLine
-      canMove={false}
-      canResize={false}
+      canMove={true}
+      canResize={true}
       defaultTimeStart={state.defaultTimeStart}
       defaultTimeEnd={state.defaultTimeEnd}
     >
       <TimelineHeaders className="sticky">
         <SidebarHeader>
           {({ getRootProps }) => {
-            return <div {...getRootProps()}>Left</div>;
+            return <div {...getRootProps()}>Employees</div>;
           }}
         </SidebarHeader>
         <DateHeader unit="primaryHeader" />
