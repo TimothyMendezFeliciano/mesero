@@ -15,7 +15,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
   const [selected, setSelected] = useState(restaurants[0]);
 
   return (
-    <div className={'flex flex-row justify-between items-center'}>
+    <div className={'flex flex-row justify-between items-center px-4'}>
       <div className={'inline-flex gap-4'}>
         <select
           className={

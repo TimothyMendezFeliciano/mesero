@@ -14,6 +14,7 @@ import { useMemo } from 'react';
 import { User } from '../../models/main';
 import BitNoiseScheduler from '../../components/SchedulerCalendar/BitNoiseScheduler';
 import Room from '../../components/Chat/Room';
+import ReactCalendarTimeline from '../../components/SchedulerCalendar/ReactCalendarTimeline';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -42,7 +43,8 @@ const Admin: NextPage = (props, context) => {
         <DashboardLayout
           TopComponent={<DashboardBanner admin={session.user as User} />}
           LeftComponent={<Room />}
-          MainComponent={<BitNoiseScheduler />}
+          // MainComponent={<BitNoiseScheduler />}
+          MainComponent={<ReactCalendarTimeline />}
         />
       </Layout>
     </>
