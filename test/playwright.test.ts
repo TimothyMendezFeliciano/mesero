@@ -4,7 +4,7 @@ test.setTimeout(35e3);
 
 test('send message', async ({ browser, page }) => {
   const viewer = await browser.newPage();
-  await viewer.goto('/');
+  await viewer.goto('/notIndex');
 
   await page.goto('/api/auth/signin');
   await page.type('[name="name"]', 'test');

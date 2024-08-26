@@ -52,7 +52,6 @@ export const nextAuthOptions: NextAuthOptions = {
     },
     session: async ({ session, user }) => {
       let sesh: Session = session;
-
       try {
         if (session.user?.email) {
           const realUser = await getUserByEmail(session.user.email, prisma);
@@ -64,7 +63,9 @@ export const nextAuthOptions: NextAuthOptions = {
             };
           }
         }
-
+        if (sesh.user?.stripeCustomerId) {
+          return sesh;
+        }
         if (
           sesh?.user &&
           'stripeCustomerId' in user &&

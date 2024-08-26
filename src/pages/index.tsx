@@ -1,7 +1,24 @@
 import { COMPANY_INFO } from '../constants/companyInfo';
 import { navigation } from '../constants/navigation';
 import Layout from '../components/Layout';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import { getServerSession, Session } from 'next-auth';
+import { nextAuthOptions } from './api/auth/[...nextauth]';
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext,
+) => {
+  const session1: Session | null = await getServerSession(
+    ctx.req,
+    ctx.res,
+    nextAuthOptions,
+  );
+  return {
+    props: {
+      session: JSON.stringify(session1),
+    },
+  };
+};
 
 const Home: NextPage = () => {
   return (

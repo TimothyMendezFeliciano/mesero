@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./types/next-auth.d.ts"],
+    "typeRoots": ["./types/next-auth.d.ts",
+      "./types/styled-components.d.ts"
+    ],
     "target": "es5",
     "lib": [
       "dom",
@@ -25,6 +27,7 @@
   "include": [
     "/types/next-auth.d.ts",
     "next-env.d.ts",
+    "/types/styled-components.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
