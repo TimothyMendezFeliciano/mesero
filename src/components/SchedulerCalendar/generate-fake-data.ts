@@ -8,8 +8,8 @@ export default function (groupCount = 30, itemCount = 1000, daysInPast = 30) {
   for (let i = 0; i < groupCount; i++) {
     groups.push({
       id: `${i + 1}`,
-      title: faker.name.firstName(),
-      rightTitle: faker.name.lastName(),
+      title: faker.person.firstName(),
+      rightTitle: faker.person.lastName(),
       bgColor: randomColor({ luminosity: 'light', seed: randomSeed + i }),
     });
   }
@@ -17,7 +17,8 @@ export default function (groupCount = 30, itemCount = 1000, daysInPast = 30) {
   let items = [];
   for (let i = 0; i < itemCount; i++) {
     const startDate =
-      faker.date.recent(daysInPast).valueOf() + daysInPast * 0.3 * 86400 * 1000;
+      faker.date.recent({ days: daysInPast }).valueOf() +
+      daysInPast * 0.3 * 86400 * 1000;
     const startValue =
       Math.floor(moment(startDate).valueOf() / 10000000) * 10000000;
     const endValue = moment(

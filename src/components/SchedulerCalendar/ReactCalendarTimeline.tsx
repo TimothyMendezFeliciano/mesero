@@ -21,8 +21,10 @@ const keys = {
   groupLabelKey: 'title',
 };
 
+const { groups, items } = generateFakeData(150);
+
 export default function ReactCalendarTimeline() {
-  const { groups, items } = generateFakeData(150);
+
   const defaultTimeStart = moment().startOf('day').toDate();
   const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate();
 

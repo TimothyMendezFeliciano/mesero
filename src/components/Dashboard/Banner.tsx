@@ -18,6 +18,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
     <div className={'flex flex-row justify-between items-center px-4'}>
       <div className={'inline-flex gap-4'}>
         <select
+          defaultValue={''}
           className={
             'select select-bordered w-full max-w-xs select-primary truncate'
           }

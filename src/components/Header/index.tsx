@@ -1,11 +1,28 @@
 import { authedNavigation, navigation } from '../../constants/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 
 export default function Header() {
-  const { data } = useSession();
-  const user: any = useMemo(() => data?.user, [data]);
+  const { data, update, status } = useSession();
+
+  // Listen for when the page is visible, if the user switches tabs
+  // and makes our tab visible again, re-fetch the session
+  useEffect(() => {
+    const visibilityHandler = () =>
+      document.visibilityState === 'visible' && update();
+    window.addEventListener('visibilitychange', visibilityHandler, false);
+    return () =>
+      window.removeEventListener('visibilitychange', visibilityHandler, false);
+  }, [update]);
+
+  useEffect(() => {
+    // TIP: You can also use `navigator.onLine` and some extra event handlers
+    // to check if the user is online and only update the session if they are.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine
+    const interval = setInterval(() => update(), 1000 * 3);
+    return () => clearInterval(interval);
+  }, [update]);
 
   return (
     <div className={'navbar bg-base-100'}>
@@ -31,7 +48,9 @@ export default function Header() {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            {user?.role === 'GUEST' &&
+            {(data.user?.role === 'GUEST' ||
+              data.user?.role === 'OWNER' ||
+              data.user?.role === 'EMPLOYEE') &&
               authedNavigation.map((item) => (
                 <li key={item.name}>
                   <a
