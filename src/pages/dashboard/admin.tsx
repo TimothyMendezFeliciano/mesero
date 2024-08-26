@@ -43,8 +43,8 @@ const Admin: NextPage = (props, context) => {
         <DashboardLayout
           TopComponent={<DashboardBanner admin={session.user as User} />}
           LeftComponent={<Room />}
-          MainComponent={<BitNoiseScheduler />}
-          // MainComponent={<ReactCalendarTimeline />}
+          // MainComponent={<BitNoiseScheduler />}
+          MainComponent={<ReactCalendarTimeline />}
         />
       </Layout>
     </>
