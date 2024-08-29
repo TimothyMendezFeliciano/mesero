@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { User } from '../../models/main';
+import { useForm } from 'react-hook-form';
+import { IRestaurant, restaurantSchema } from '../../common/restaurant/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import ControlledModal from '../Modal';
 
 type DashboardBannerType = {
   admin: User;
 };
 export default function DashboardBanner({ admin }: DashboardBannerType) {
+  const { register, handleSubmit } = useForm<IRestaurant>({
+    resolver: zodResolver(restaurantSchema),
+  });
+
+  const onSubmit = useCallback(async (data: IRestaurant) => {
+    console.log('data', data);
+  }, []);
+
   const restaurants = [
     { id: 1, name: 'Sanwicheros de la Plaza' },
     { id: 2, name: 'Combinaciones Chinas' },
@@ -13,6 +25,8 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
   ];
 
   const [selected, setSelected] = useState(restaurants[0]);
+  const [open, setOpen] = useState<boolean>(false);
+  const onClose = useCallback(() => setOpen(false), []);
 
   return (
     <div className={'flex flex-row justify-between items-center px-4'}>
@@ -31,9 +45,37 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
           ))}
         </select>
 
-        <button className={'btn btn-secondary'}>
-          <PlusCircleIcon className={'w-10 h-10'} />
-        </button>
+        <ControlledModal
+          id={'RestaurantAddButtonModal'}
+          open={open}
+          onClose={onClose}
+          closedChildren={
+            <Fragment>
+              <button
+                className={'btn btn-secondary'}
+                onClick={() =>
+                  (
+                    document.getElementById(
+                      'RestaurantAddButtonModal',
+                    ) as HTMLDialogElement
+                  ).showModal()
+                }
+              >
+                <PlusCircleIcon className={'w-10 h-10'} />
+              </button>
+            </Fragment>
+          }
+          modalAction={
+            <div className={'modal-action'}>
+              <form method={'dialog'}>
+                <button className={'btn'}>Concluir</button>
+              </form>
+            </div>
+          }
+        >
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">Press ESC key or click outside to close</p>
+        </ControlledModal>
       </div>
       <div className="avatar">
         <div className="w-24 rounded">
@@ -41,9 +83,6 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
           {/*<img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />*/}
         </div>
       </div>
-      {/*<div>*/}
-      {/*  <UserIcon className={'w-10 h-10'} />*/}
-      {/*</div>*/}
     </div>
   );
 

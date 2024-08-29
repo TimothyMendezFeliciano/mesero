@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = requireAuth(
   },
 );
 
-const Admin: NextPage = (props, context) => {
+const Admin: NextPage = (props: { session: string }, context) => {
   const session: Session = useMemo(
     () => JSON.parse(props.session),
     [props.session],
