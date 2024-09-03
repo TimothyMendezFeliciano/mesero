@@ -1,5 +1,11 @@
-import { ReactElement, ReactNode, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Description,
+} from '@headlessui/react';
 
 type Props = {
   children: ReactNode;
@@ -11,6 +17,7 @@ type Props = {
   onClose(): void;
   closedChildren: ReactNode;
   modalAction: ReactNode;
+  title?: string;
 };
 export default function ControlledModal({
   id,
@@ -20,6 +27,7 @@ export default function ControlledModal({
   onClose,
   modalAction,
   closedChildren,
+  title,
 }: Props) {
   const ref = useRef(null);
   useOnClickOutside(ref, () => {
@@ -33,11 +41,15 @@ export default function ControlledModal({
   }
 
   return (
-    <dialog id={id} className={'modal'}>
-      <div className={'modal-box'}>
-        {children}
-        <div className={'modal-action'}>{modalAction}</div>
+    <Dialog open={open} onClose={() => onClose()} className="relative z-50">
+      <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+        <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
+          <DialogTitle className="font-bold">Deactivate account</DialogTitle>
+          {title && <Description>{title}</Description>}
+          {children}
+          {modalAction}
+        </DialogPanel>
       </div>
-    </dialog>
+    </Dialog>
   );
 }

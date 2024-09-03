@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { IRestaurant, restaurantSchema } from '../../common/restaurant/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ControlledModal from '../Modal';
+import { DialogTitle } from '@headlessui/react';
 
 type DashboardBannerType = {
   admin: User;
@@ -37,7 +38,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
             'select select-bordered w-full max-w-xs select-primary truncate'
           }
         >
-          <option disabled selected>
+          <option disabled defaultValue={''}>
             Select Restaurant Timesheet
           </option>
           {restaurants.map((restaurant) => (
@@ -53,13 +54,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
             <Fragment>
               <button
                 className={'btn btn-secondary'}
-                onClick={() =>
-                  (
-                    document.getElementById(
-                      'RestaurantAddButtonModal',
-                    ) as HTMLDialogElement
-                  ).showModal()
-                }
+                onClick={() => setOpen(true)}
               >
                 <PlusCircleIcon className={'w-10 h-10'} />
               </button>
@@ -68,17 +63,19 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
           modalAction={
             <div className={'modal-action'}>
               <form method={'dialog'}>
-                <button className={'btn'}>Concluir</button>
+                <button className={'btn'} onClick={onClose}>Concluir</button>
               </form>
             </div>
           }
         >
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click outside to close</p>
+          <DialogTitle>
+            <h3 className='font-bold text-lg'>Hello!</h3>
+          </DialogTitle>
+          <p className='py-4'>Press ESC key or click outside to close</p>
         </ControlledModal>
       </div>
-      <div className="avatar">
-        <div className="w-24 rounded">
+      <div className='avatar'>
+        <div className='w-24 rounded'>
           <img src={admin.image} />
           {/*<img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />*/}
         </div>

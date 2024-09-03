@@ -1,9 +1,4 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextPage,
-} from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import { requireAuth } from '../../server/requireAuth';
 import Layout from '../../components/Layout';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
@@ -12,9 +7,7 @@ import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
 import { useMemo } from 'react';
 import { User } from '../../models/main';
-import BitNoiseScheduler from '../../components/SchedulerCalendar/BitNoiseScheduler';
 import Room from '../../components/Chat/Room';
-import ReactCalendarTimeline from '../../components/SchedulerCalendar/ReactCalendarTimeline';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -43,8 +36,11 @@ const Admin: NextPage = (props: { session: string }, context) => {
         <DashboardLayout
           TopComponent={<DashboardBanner admin={session.user as User} />}
           LeftComponent={<Room />}
-          // MainComponent={<BitNoiseScheduler />}
-          MainComponent={<ReactCalendarTimeline />}
+          MainComponent={
+            <div className={'flex w-full h-full'}>
+              Here goes the Calendar if I had one!
+            </div>
+          }
         />
       </Layout>
     </>
