@@ -137,15 +137,18 @@ model RestaurantMenu {
 
 model Location {
   id           String     @id @default(uuid())
-  latitude     Float?
-  longitud     Float?
-  coordinates  String?
+  title        String
+  address      String?
+  website      String?
+  phone        String?
   restaurant   Restaurant @relation(fields: [restaurandId], references: [id])
   restaurandId String     @unique
 
-  @@index([coordinates])
-  @@index([latitude, longitud])
-  @@index([latitude, longitud, restaurandId])
+  @@index([address])
+  @@index([website])
+  @@index([phone])
+  @@index([phone, title])
+  @@index([website, title])
 }
 
 model Table {

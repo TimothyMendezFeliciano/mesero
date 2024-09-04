@@ -1,24 +1,13 @@
 import { Fragment, useCallback, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { User } from '../../models/main';
-import { useForm } from 'react-hook-form';
-import { IRestaurant, restaurantSchema } from '../../common/restaurant/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import ControlledModal from '../Modal';
-import { DialogTitle } from '@headlessui/react';
+import { RestaurantForm } from '../RestaurantForm';
 
 type DashboardBannerType = {
   admin: User;
 };
 export default function DashboardBanner({ admin }: DashboardBannerType) {
-  const { register, handleSubmit } = useForm<IRestaurant>({
-    resolver: zodResolver(restaurantSchema),
-  });
-
-  const onSubmit = useCallback(async (data: IRestaurant) => {
-    console.log('data', data);
-  }, []);
-
   const restaurants = [
     { id: 1, name: 'Sanwicheros de la Plaza' },
     { id: 2, name: 'Combinaciones Chinas' },
@@ -71,7 +60,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
             </div>
           }
         >
-          <p className="py-4">Press ESC key or click outside to close</p>
+          <RestaurantForm />
         </ControlledModal>
       </div>
       <div className="avatar">
