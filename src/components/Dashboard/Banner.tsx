@@ -39,7 +39,7 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
           id={'RestaurantAddButtonModal'}
           open={open}
           onClose={onClose}
-          title={'Add Restaurant'}
+          title={'Añadir Restaurante'}
           closedChildren={
             <Fragment>
               <button
