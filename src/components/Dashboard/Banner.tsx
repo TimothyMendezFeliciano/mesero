@@ -2,7 +2,7 @@ import { Fragment, useCallback, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { User } from '../../models/main';
 import ControlledModal from '../Modal';
-import { RestaurantForm } from '../RestaurantForm';
+import { RestaurantForm } from '../Forms/RestaurantForm';
 
 type DashboardBannerType = {
   admin: User;
