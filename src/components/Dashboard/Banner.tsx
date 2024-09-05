@@ -1,8 +1,9 @@
 import { Fragment, useCallback, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { User } from '../../models/main';
-import ControlledModal from '../Modal';
+import { ControlledModal } from '../Modal';
 import { RestaurantForm } from '../Forms/RestaurantForm';
+import { ModalContext, ModalProvider } from '../../context/ModalContext';
 
 type DashboardBannerType = {
   admin: User;
@@ -15,8 +16,6 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
   ];
 
   const [selected, setSelected] = useState(restaurants[0]);
-  const [open, setOpen] = useState<boolean>(false);
-  const onClose = useCallback(() => setOpen(false), []);
 
   return (
     <div className={'flex flex-row justify-between items-center px-4'}>
@@ -35,36 +34,22 @@ export default function DashboardBanner({ admin }: DashboardBannerType) {
           ))}
         </select>
 
-        <ControlledModal
-          id={'RestaurantAddButtonModal'}
-          open={open}
-          onClose={onClose}
-          title={'Añadir Restaurante'}
-          closedChildren={
-            <Fragment>
-              <button
-                className={'btn btn-secondary'}
-                onClick={() => setOpen(true)}
-              >
-                <PlusCircleIcon className={'w-10 h-10'} />
-              </button>
-            </Fragment>
-          }
-          modalAction={
-            <div className={'modal-action'}>
-              <form method={'dialog'}>
-                <button className={'btn'} onClick={onClose}>
-                  Concluir
-                </button>
-              </form>
-            </div>
-          }
+        <ModalProvider
         >
-          <RestaurantForm />
-        </ControlledModal>
+          <ControlledModal
+            id={'RestaurantAddButtonModal'}
+            title={'Añadir Restaurante'}
+            triggerButtonContent={
+              <PlusCircleIcon className={'w-10 h-10'} />
+            }
+            closeButtonContent={<p>Guardar!</p>}
+          >
+            <RestaurantForm />
+          </ControlledModal>
+        </ModalProvider>
       </div>
-      <div className="avatar">
-        <div className="w-24 rounded">
+      <div className='avatar'>
+        <div className='w-24 rounded'>
           <img src={admin.image} />
           {/*<img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' />*/}
         </div>
