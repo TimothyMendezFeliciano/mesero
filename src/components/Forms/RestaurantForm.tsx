@@ -18,9 +18,7 @@ export function RestaurantForm() {
   const { setCallback } = useModalContext();
 
   useEffect(() => {
-    setCallback(
-      handleSubmit(onSubmit),
-    );
+    setCallback(handleSubmit(onSubmit));
   }, [handleSubmit]);
 
   return (

@@ -28,7 +28,7 @@ type ModalProviderProps = {
 
 export function ModalProvider<T = unknown>({ children }: ModalProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [callback, setCallback] = useState<undefined>(undefined);
+  const [callback, setCallback] = useState<() => undefined>(() => undefined);
 
   const openModal = () => {
     setIsOpen(true);
@@ -36,14 +36,9 @@ export function ModalProvider<T = unknown>({ children }: ModalProviderProps) {
 
   const closeModal = useCallback(async () => {
     console.log('Is there a callback?', callback);
+    // TODO: Make sure this runs.
     if (callback) {
-      // Check if the callback is async (returns a Promise)
-      if (callback instanceof Function) {
-        const result = callback();
-        if (result instanceof Promise) {
-          await result; // Await async functions
-        }
-      }
+      callback();
     }
     setIsOpen(false);
   }, [callback]);
