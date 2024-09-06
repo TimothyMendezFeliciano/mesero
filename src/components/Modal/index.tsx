@@ -41,9 +41,7 @@ export function ControlledModal({
   });
 
   if (!isOpen) {
-    return <ModalTriggerButton>
-      {triggerButtonContent}
-    </ModalTriggerButton>;
+    return <ModalTriggerButton>{triggerButtonContent}</ModalTriggerButton>;
   }
 
   return (
@@ -58,9 +56,7 @@ export function ControlledModal({
           {title && <DialogTitle className='font-bold'>{title}</DialogTitle>}
           {description && <Description>{description}</Description>}
           {children}
-          <CloseTriggerButton>
-            {closeButtonContent}
-          </CloseTriggerButton>
+          <CloseTriggerButton>{closeButtonContent}</CloseTriggerButton>
         </DialogPanel>
       </div>
     </Dialog>
@@ -68,11 +64,10 @@ export function ControlledModal({
 }
 
 function CloseTriggerButton({ children }) {
-
   const { closeModal } = useModalContext();
   return (
     <div className={'modal-action'}>
-      <button className={'btn'} onClick={() => closeModal()}>
+      <button className={'btn'} onClick={() => closeModal()} type={'submit'}>
         {children}
       </button>
     </div>
@@ -84,10 +79,7 @@ function ModalTriggerButton({ children }) {
 
   return (
     <Fragment>
-      <button
-        className={'btn btn-secondary'}
-        onClick={openModal}
-      >
+      <button className={'btn btn-secondary'} onClick={openModal}>
         {children}
       </button>
     </Fragment>
