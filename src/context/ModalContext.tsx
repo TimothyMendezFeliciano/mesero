@@ -1,25 +1,29 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
+import { types } from 'util';
 
 export type ModalContextType = {
   isOpen: boolean;
   openModal: () => void;
-  closeModal: (callback?: () => void) => void;
-  callback: () => Promise<void> | void | undefined;
-  setCallback: Dispatch<SetStateAction<() => Promise<void> | void | undefined>>;
+  closeModal: () => void;
+  callback: (() => Promise<void> | void) | undefined;
+  setCallback: Dispatch<
+    SetStateAction<(() => Promise<void> | void) | undefined>
+  >;
 };
 
 export const ModalContext = createContext<ModalContextType>({
   isOpen: false,
-  openModal: () => {
-  },
-  closeModal: (callback) => {
-    if (callback) {
-      callback();
-    }
-  },
+  openModal: () => undefined,
+  closeModal: () => undefined,
   callback: undefined,
-  setCallback: () => {
-  },
+  setCallback: () => undefined,
 });
 
 type ModalProviderProps = {
@@ -28,17 +32,21 @@ type ModalProviderProps = {
 
 export function ModalProvider<T = unknown>({ children }: ModalProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [callback, setCallback] = useState<() => undefined>(() => undefined);
+  const [callback, setCallback] = useState<
+    (() => Promise<void> | void) | undefined
+  >(undefined);
 
   const openModal = () => {
     setIsOpen(true);
   };
 
   const closeModal = useCallback(async () => {
-    console.log('Is there a callback?', callback);
-    // TODO: Make sure this runs.
-    if (callback) {
-      callback();
+    if (callback && typeof callback === 'function') {
+      if (types.isAsyncFunction(callback)) {
+        callback();
+      } else {
+        await callback();
+      }
     }
     setIsOpen(false);
   }, [callback]);
