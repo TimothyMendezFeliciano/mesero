@@ -34,6 +34,7 @@ class MyRestaurantEventEmitter extends EventEmitter {}
 
 const ee = new MyRestaurantEventEmitter();
 
+// TODO: Modify this to be used by RestaurantForm component.
 export const restaurantRouter = router({
   // TODO: Consider making authedProcedure
   addRestaurant: publicProcedure
