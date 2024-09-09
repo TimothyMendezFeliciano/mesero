@@ -1,18 +1,27 @@
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { IRestaurant, restaurantSchema } from '../../common/restaurant/schema';
+import {
+  IRestaurant,
+  restaurantCreationSchema,
+} from '../../common/restaurant/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { municipios } from '../../constants/municipios';
 import { useModalContext } from '../../hooks/useModalContext';
+import { useSession } from 'next-auth/react';
+import { trpc } from '../../utils/trpc';
 
 export function RestaurantForm() {
+  const { data: admin } = useSession();
   const { register, handleSubmit, watch } = useForm<IRestaurant>({
-    resolver: zodResolver(restaurantSchema),
+    resolver: zodResolver(restaurantCreationSchema),
   });
+
+  const addRestaurant = trpc.restaurant.addRestaurant.useMutation();
   const watchAllFields = watch();
 
-  const onSubmit: SubmitHandler<IRestaurant> = (data) => {
-    console.log('Simple form', data);
+  const onSubmit: SubmitHandler<IRestaurant> = async (data) => {
+    console.log('Simple form', { ...data, who: admin.user.id });
+    await addRestaurant.mutateAsync({ ...data, userId: admin.user.id });
   };
   const onInvalid: SubmitErrorHandler<IRestaurant> = (error) => {
     console.log('Whats the holdup?', error);

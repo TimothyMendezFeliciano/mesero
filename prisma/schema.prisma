@@ -117,14 +117,15 @@ model Restaurant {
   name                  String
   image                 String?
   menu                  RestaurantMenu? @relation(fields: [restaurantMenuId], references: [id])
-  location              Location?
-  restaurantMenuId      String
+  location              Location?       @relation(fields: [locationId], references: [id])
+  restaurantMenuId      String?
   previousAvgOrderCount Float           @default(0)
   newAvgOrderCount      Float           @default(0)
   tables                Table[]
   Orders                Orders[]
   User                  User?           @relation(fields: [userId], references: [id])
   userId                String?
+  locationId            String?
 
   @@index([name])
 }
@@ -135,20 +136,27 @@ model RestaurantMenu {
   Restaurant Restaurant[]
 }
 
+// model Location {
+//   id           String     @id @default(uuid())
+//   title        String
+//   address      String?
+//   website      String?
+//   phone        String?
+//   restaurant   Restaurant @relation(fields: [restaurandId], references: [id])
+//   restaurandId String     @unique
+//
+//   @@index([address])
+//   @@index([website])
+//   @@index([phone])
+//   @@index([phone, title])
+//   @@index([website, title])
+// }
 model Location {
-  id           String     @id @default(uuid())
-  title        String
-  address      String?
-  website      String?
-  phone        String?
-  restaurant   Restaurant @relation(fields: [restaurandId], references: [id])
-  restaurandId String     @unique
+  id         String       @id @default(uuid())
+  town       String       @unique
+  Restaurant Restaurant[]
 
-  @@index([address])
-  @@index([website])
-  @@index([phone])
-  @@index([phone, title])
-  @@index([website, title])
+  @@index([town])
 }
 
 model Table {

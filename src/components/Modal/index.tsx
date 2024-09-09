@@ -32,7 +32,7 @@ export function ControlledModal({
 }: Props) {
   const ref = useRef(null);
 
-  const { isOpen, closeModal, openModal } = useModalContext();
+  const { isOpen, closeModal } = useModalContext();
 
   useOnClickOutside(ref, () => {
     if (!disableClickOutside) {
@@ -47,6 +47,7 @@ export function ControlledModal({
   return (
     <Dialog
       id={id}
+      ref={ref}
       open={isOpen}
       onClose={() => closeModal()}
       className="relative z-50 flex flex-grow"

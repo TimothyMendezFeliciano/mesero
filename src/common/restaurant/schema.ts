@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const restaurantSchema = z.object({
+export const restaurantCreationSchema = z.object({
   name: z.string().trim().toLowerCase(),
   location: z.string().trim().toLowerCase(),
   employeeCount: z
@@ -9,4 +9,4 @@ export const restaurantSchema = z.object({
     .int({ message: 'Employee Count must be a valid number' }),
 });
 
-export type IRestaurant = z.infer<typeof restaurantSchema>;
+export type IRestaurant = z.infer<typeof restaurantCreationSchema>;

@@ -6,7 +6,6 @@ import DashboardBanner from '../../components/Dashboard/Banner';
 import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
 import { useMemo } from 'react';
-import { User } from '../../models/main';
 import Room from '../../components/Chat/Room';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
@@ -34,7 +33,7 @@ const Admin: NextPage = (props: { session: string }, context) => {
     <>
       <Layout>
         <DashboardLayout
-          TopComponent={<DashboardBanner admin={session.user as User} />}
+          TopComponent={<DashboardBanner />}
           LeftComponent={<Room />}
           MainComponent={
             <div className={'flex w-full h-full'}>
