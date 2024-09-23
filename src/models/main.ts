@@ -67,11 +67,11 @@ export interface Restaurant {
   image?: string;
   menu?: RestaurantMenu;
   location?: Location;
-  restaurantMenuId: string;
+  restaurantMenuId?: string;
   previousAvgOrderCount: number;
   newAvgOrderCount: number;
-  tables: Table[];
-  Orders: Orders[];
+  tables?: Table[];
+  Orders?: Orders[];
   User?: User;
   userId?: string;
 }
@@ -84,11 +84,9 @@ export interface RestaurantMenu {
 
 export interface Location {
   id: string;
-  latitude?: number;
-  longitud?: number;
-  coordinates?: string;
+  town: string;
   restaurant: Restaurant;
-  restaurandId: string;
+  restaurantId: string;
 }
 
 export interface Table {

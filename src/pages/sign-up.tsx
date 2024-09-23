@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FcGoogle } from 'react-icons/fc';
@@ -7,6 +7,32 @@ import { signIn } from 'next-auth/react';
 import Markdown from 'react-markdown';
 import { PrivacyPolicy } from '../constants/PrivacyPolicy';
 import { TermsOfService } from '../constants/TermsOfService';
+import { getServerSession, Session } from 'next-auth';
+import { nextAuthOptions } from './api/auth/[...nextauth]';
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext,
+) => {
+  const session1: Session | null = await getServerSession(
+    ctx.req,
+    ctx.res,
+    nextAuthOptions,
+  );
+
+  if (session1?.user?.isActive) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session: JSON.stringify(session1),
+    },
+  };
+};
 
 const SignUp: NextPage = () => {
   return (

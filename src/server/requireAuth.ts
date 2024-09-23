@@ -11,8 +11,6 @@ export const requireAuth =
       nextAuthOptions,
     );
 
-    console.log('session1', session1);
-
     if (session1.user.role === UserType.OWNER && !session1.user.isActive) {
       return {
         redirect: {
