@@ -33,7 +33,7 @@ const Admin: NextPage = (props: { session: string }, context) => {
     <>
       <Layout>
         <DashboardLayout
-          TopComponent={<DashboardBanner />}
+          TopComponent={<DashboardBanner admin={session} />}
           LeftComponent={<Room />}
           MainComponent={
             <div className={'flex w-full h-full'}>

@@ -3,10 +3,8 @@ import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ControlledModal } from '../Modal';
 import { RestaurantForm } from '../Forms/RestaurantForm';
 import { ModalProvider } from '../../context/ModalContext';
-import { useSession } from 'next-auth/react';
 
-export default function DashboardBanner() {
-  const { data: admin } = useSession();
+export default function DashboardBanner({ admin }) {
   const restaurants = [
     { id: 1, name: 'Sanwicheros de la Plaza' },
     { id: 2, name: 'Combinaciones Chinas' },

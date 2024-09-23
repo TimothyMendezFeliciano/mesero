@@ -9,22 +9,23 @@ import { municipios } from '../../constants/municipios';
 import { useModalContext } from '../../hooks/useModalContext';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
+import { classNames } from '../../utils/classNames';
 
 export function RestaurantForm() {
   const { data: admin } = useSession();
-  const { register, handleSubmit, watch } = useForm<IRestaurant>({
-    resolver: zodResolver(restaurantCreationSchema),
-  });
+  const { register, handleSubmit, watch, formState, trigger } =
+    useForm<IRestaurant>({
+      resolver: zodResolver(restaurantCreationSchema),
+    });
 
   const addRestaurant = trpc.restaurant.addRestaurant.useMutation();
   const watchAllFields = watch();
 
   const onSubmit: SubmitHandler<IRestaurant> = async (data) => {
-    console.log('Simple form', { ...data, who: admin.user.id });
     await addRestaurant.mutateAsync({ ...data, userId: admin.user.id });
   };
   const onInvalid: SubmitErrorHandler<IRestaurant> = (error) => {
-    console.log('Whats the holdup?', error);
+    console.error('Error Creating Restaurant', error);
   };
 
   const { setCallback } = useModalContext();
@@ -48,8 +49,9 @@ export function RestaurantForm() {
             <input
               type="text"
               placeholder={'Mi Restaurante'}
-              className={'grow border-0'}
-              {...register('name')}
+              onChange={() => trigger('name')}
+              className={classNames('grow border-0', 'invalid: text-red-500')}
+              {...register('name', { required: 'Nombre es requerido' })}
             />
           </label>
 
@@ -58,16 +60,20 @@ export function RestaurantForm() {
             <input
               {...register('employeeCount', {
                 valueAsNumber: true,
+                required: 'Cantidad de empleados es requerido',
+                min: 0,
               })}
               placeholder={'5'}
               className={'grow border-0'}
+              onChange={() => trigger('employeeCount')}
               type="number"
             />
           </label>
 
           <select
             className={'select select-bordered w-full max-w-xs'}
-            {...register('location')}
+            {...register('location', { required: 'Pueblo es requerido' })}
+            onChange={() => trigger('location')}
             defaultValue={''}
           >
             <option disabled>Pueblo</option>
