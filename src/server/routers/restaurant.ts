@@ -38,6 +38,7 @@ const ee = new MyRestaurantEventEmitter();
 // TODO: Modify this to be used by RestaurantForm component.
 export const restaurantRouter = router({
   getRestaurantByContext: authedProcedure.query(async ({ ctx }) => {
+    console.log('There should be no context', ctx);
     return prisma.restaurant.findMany({
       where: {
         userId: ctx.user.id,

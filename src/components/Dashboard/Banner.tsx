@@ -15,7 +15,7 @@ export default function DashboardBanner({
   admin,
   restaurants,
 }: DashboardProps) {
-  const [selected, setSelected] = useState(restaurants[0]);
+  const [selected, setSelected] = useState(restaurants[0] || []);
 
   return (
     <div className={'flex flex-row justify-between items-center px-4'}>
