@@ -37,6 +37,13 @@ const ee = new MyRestaurantEventEmitter();
 
 // TODO: Modify this to be used by RestaurantForm component.
 export const restaurantRouter = router({
+  getRestaurantByContext: authedProcedure.query(async ({ ctx }) => {
+    return prisma.restaurant.findMany({
+      where: {
+        userId: ctx.user.id,
+      },
+    });
+  }),
   // TODO: Consider making authedProcedure
   addRestaurant: authedProcedure
     .input(
@@ -65,8 +72,6 @@ export const restaurantRouter = router({
           },
         },
       });
-
-      console.log('Restaurant Creation was Succesful', restaurant);
 
       ee.emit('addRestaurant', restaurant);
       return restaurant;
