@@ -67,7 +67,7 @@ export interface Restaurant {
   image?: string;
   menu?: RestaurantMenu;
   location?: Location;
-  restaurantMenuId: string | null;
+  restaurantMenuId?: string;
   previousAvgOrderCount: number;
   newAvgOrderCount: number;
   tables?: Table[];
@@ -86,7 +86,7 @@ export interface Location {
   id: string;
   town: string;
   restaurant: Restaurant;
-  restaurandId: string;
+  restaurantId: string;
 }
 
 export interface Table {
