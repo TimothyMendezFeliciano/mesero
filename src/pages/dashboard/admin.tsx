@@ -34,8 +34,6 @@ const Admin: NextPage = (props: { session: string }, context) => {
 
   const { data } = trpc.restaurant.getRestaurantByContext.useQuery();
 
-  console.log('Restaurants No Id', data);
-
   return (
     <>
       <Layout>
