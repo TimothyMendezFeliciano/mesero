@@ -48,6 +48,7 @@
     "@headlessui/react": "^2.1.4",
     "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.4",
+    "@mobiscroll/react": "npm:@mobiscroll/react-next@5.32.0",
     "@prisma/client": "^5.19.1",
     "@react-google-maps/api": "^2.19.3",
     "@stripe/stripe-js": "^3.5.0",

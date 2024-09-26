@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import Room from '../../components/Chat/Room';
 import { trpc } from '../../utils/trpc';
 import { Restaurant } from '../../models/main';
+import ShiftScheduler from '../../components/Mobiscroll/ShiftScheduler';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -46,11 +47,12 @@ const Admin: NextPage = (props: { session: string }, context) => {
             />
           }
           LeftComponent={<Room />}
-          MainComponent={
-            <div className={'flex w-full h-full'}>
-              Here goes the Calendar if I had one!
-            </div>
-          }
+          // MainComponent={
+          //   <div className={'flex w-full h-full'}>
+          //     Here goes the Calendar if I had one!
+          //   </div>
+          // }
+          MainComponent={<ShiftScheduler/>}
         />
       </Layout>
     </>
