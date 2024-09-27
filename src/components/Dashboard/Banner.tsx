@@ -15,13 +15,14 @@ export default function DashboardBanner({
   admin,
   restaurants,
 }: DashboardProps) {
-  const [selected, setSelected] = useState(restaurants[0]);
+  const [selected, setSelected] = useState<Restaurant>(undefined);
 
   return (
     <div className={'flex flex-row justify-between items-center px-4'}>
       <div className={'inline-flex gap-4'}>
         <select
           defaultValue={''}
+          value={selected?.name}
           className={
             'select select-bordered w-full max-w-xs select-primary truncate'
           }
@@ -30,7 +31,9 @@ export default function DashboardBanner({
             Select Restaurant Timesheet
           </option>
           {restaurants.map((restaurant) => (
-            <option key={restaurant.id}>{restaurant.name}</option>
+            <option key={restaurant.id} onClick={() => setSelected(restaurant)}>
+              {restaurant.name}
+            </option>
           ))}
         </select>
 

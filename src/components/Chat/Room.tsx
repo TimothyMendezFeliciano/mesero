@@ -1,43 +1,22 @@
-export default function Room() {
-  return (
-    <>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-        </div>
-        <div className="chat-bubble">
-          It was said that you would, destroy the Sith, not join them.
-        </div>
-      </div>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-        </div>
-        <div className="chat-bubble">
-          It was you who would bring balance to the Force
-        </div>
-      </div>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
-          </div>
-        </div>
-        <div className="chat-bubble">Not leave it in Darkness</div>
-      </div>
-    </>
-  );
+import dynamic from 'next/dynamic';
+
+const ChatWidget = dynamic(
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  () => import('react-chat-widget').then((m) => m.Widget),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
+
+type ChatRoomProps = {
+  restaurantName?: string;
+};
+
+export function ChatRoom({ restaurantName }: ChatRoomProps) {
+  const handleNewUserMessage = (newMessage: string) => {
+    console.log(`New message incoming! ${newMessage}`);
+  };
+  return <ChatWidget handleNewUserMessage={handleNewUserMessage} />;
 }

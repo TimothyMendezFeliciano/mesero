@@ -19,6 +19,8 @@ export const getServerSideProps: GetServerSideProps = async (
     nextAuthOptions,
   );
 
+  console.log('Do we have a session?', session1);
+
   if (session1?.user?.isActive) {
     return {
       redirect: {

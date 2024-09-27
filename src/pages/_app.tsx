@@ -1,4 +1,6 @@
 import '../styles/global.css';
+import 'react-chat-widget/lib/styles.css';
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import type { Session } from 'next-auth';
 import { getSession, SessionProvider } from 'next-auth/react';
 import type { AppType } from 'next/app';

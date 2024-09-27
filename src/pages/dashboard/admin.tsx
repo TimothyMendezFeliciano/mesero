@@ -6,9 +6,10 @@ import DashboardBanner from '../../components/Dashboard/Banner';
 import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
 import { useMemo } from 'react';
-import Room from '../../components/Chat/Room';
+import { ChatRoom } from '../../components/Chat/Room';
 import { trpc } from '../../utils/trpc';
 import { Restaurant } from '../../models/main';
+import ShiftScheduler from '../../components/Mobiscroll/ShiftScheduler';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -33,6 +34,7 @@ const Admin: NextPage = (props: { session: string }, context) => {
   );
 
   const { data } = trpc.restaurant.getRestaurantByContext.useQuery();
+  console.log('No Restaurants?', data);
 
   return (
     <>
@@ -41,15 +43,16 @@ const Admin: NextPage = (props: { session: string }, context) => {
           TopComponent={
             <DashboardBanner
               admin={session}
-              restaurants={data as Restaurant[]}
+              restaurants={data ? (data as Restaurant[]) : []}
             />
           }
-          LeftComponent={<Room />}
-          MainComponent={
-            <div className={'flex w-full h-full'}>
-              Here goes the Calendar if I had one!
-            </div>
-          }
+          ChatRoom={<ChatRoom />}
+          // MainComponent={
+          //   <div className={'flex w-full h-full'}>
+          //     Here goes the Calendar if I had one!
+          //   </div>
+          // }
+          MainComponent={<ShiftScheduler />}
         />
       </Layout>
     </>
