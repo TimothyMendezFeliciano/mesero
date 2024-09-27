@@ -18,14 +18,15 @@ import {
   MbscSlot,
   MbscSlotData,
   Select,
-  setOptions, localeEs,
+  setOptions,
+  localeEs,
 } from '@mobiscroll/react';
 import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react';
 
 setOptions({
   locale: localeEs,
   theme: 'ios',
-  themeVariant: 'light'
+  themeVariant: 'light',
 });
 
 const myResources: MbscResource[] = [
@@ -254,7 +255,6 @@ const myResources: MbscResource[] = [
 ];
 
 const allShifts: MbscCalendarEvent[] = [
-  // Showing partial data. Download full source.
   {
     start: '2024-09-25T02:00',
     end: '2024-09-25T10:00',
@@ -561,28 +561,28 @@ export function ShiftScheduler() {
     () =>
       selectedView === 'day'
         ? {
-          timeline: {
-            type: 'day',
-            eventList: true,
-          },
-        }
+            timeline: {
+              type: 'day',
+              eventList: true,
+            },
+          }
         : {
-          timeline: {
-            type: 'week',
-            eventList: true,
-            startDay: 1,
-            endDay: 5,
+            timeline: {
+              type: 'week',
+              eventList: true,
+              startDay: 1,
+              endDay: 5,
+            },
           },
-        },
     [selectedView],
   );
 
   const getEmployeeName = useCallback((event: MbscCalendarEvent) => {
     for (let i = 0; i < myResources.length; ++i) {
-      for (let j = 0; j < myResources[i].children!.length; ++j) {
-        const employee = myResources[i].children![j];
+      for (let j = 0; j < myResources[i].children.length; ++j) {
+        const employee = myResources[i].children[j];
         if (employee.id === event.resource) {
-          return employee.name!.substr(0, employee.name!.indexOf(' '));
+          return employee.name.substr(0, employee.name.indexOf(' '));
         }
       }
     }
@@ -595,17 +595,22 @@ export function ShiftScheduler() {
     [getEmployeeName],
   );
 
-  const formatMyDate = useCallback((date: Date) => formatDate('YYYY-MM-DD', new Date(date)), []);
+  const formatMyDate = useCallback(
+    (date: Date) => formatDate('YYYY-MM-DD', new Date(date)),
+    [],
+  );
 
   const getShiftsNrs = useCallback(
     (date: string, slotId: number) => {
-      const shiftList: Array<number> = [];
+      const shiftList: number[] = [];
 
-      for (let i = 0; i < shifts.length; ++i) {
-        const shift = shifts[i];
+      for (const shift of shifts) {
         // get slot id from resource id
-        const resourceNr = +shift.resource!.toString().charAt(0);
-        if (shift.slot === slotId && date === formatMyDate(new Date(shift.start as string))) {
+        const resourceNr = +shift.resource.toString().charAt(0);
+        if (
+          shift.slot === slotId &&
+          date === formatMyDate(new Date(shift.start as string))
+        ) {
           shiftList[resourceNr - 1] = (shiftList[resourceNr - 1] || 0) + 1;
         }
       }
@@ -617,8 +622,13 @@ export function ShiftScheduler() {
   const renderMyResource = (resource: MbscResource) => {
     const parent = resource.children;
     return (
-      <div className={parent ? 'md-shift-resource' : ''} style={{ color: parent ? parent[0].color : '' }}>
-        {parent && <span className="md-shift-resource-icon">{resource.icon}</span>}
+      <div
+        className={parent ? 'md-shift-resource' : ''}
+        style={{ color: parent ? parent[0].color : '' }}
+      >
+        {parent && (
+          <span className="md-shift-resource-icon">{resource.icon}</span>
+        )}
         {resource.name}
       </div>
     );
@@ -644,13 +654,26 @@ export function ShiftScheduler() {
                 <Fragment key={i}>
                   <div className="md-shift-count">
                     <span className="md-shift-icon">{myResources[i].icon}</span>
-                    <span className={'md-shift-nr md-shift-nr-' + date + '-' + slot.id + '-' + (i + 1)}>{shift}</span>
+                    <span
+                      className={
+                        'md-shift-nr md-shift-nr-' +
+                        date +
+                        '-' +
+                        slot.id +
+                        '-' +
+                        (i + 1)
+                      }
+                    >
+                      {shift}
+                    </span>
                   </div>
                   {length === 4 && <br />}
                 </Fragment>
               );
             })}
-          {shiftList.length === 0 && <div className="md-shift-count">{'\uD83D\uDE36'} empty...</div>}
+          {shiftList.length === 0 && (
+            <div className="md-shift-count">{'\uD83D\uDE36'} empty...</div>
+          )}
         </div>
       </div>
     );
@@ -660,8 +683,10 @@ export function ShiftScheduler() {
     (ev: ChangeEvent<HTMLInputElement>) => {
       const value = +ev.target.value;
       const checked = ev.target.checked;
-      const filteredSlots: Array<MbscSlot> = [];
-      let updatedTimes = shiftTimes.map((cs) => (cs.id === value ? { ...cs, checked } : cs));
+      const filteredSlots: MbscSlot[] = [];
+      let updatedTimes = shiftTimes.map((cs) =>
+        cs.id === value ? { ...cs, checked } : cs,
+      );
 
       for (const slot of allSlots) {
         if (updatedTimes.find((us) => us.id === slot.id && us.checked)) {
@@ -670,7 +695,9 @@ export function ShiftScheduler() {
       }
 
       if (filteredSlots.length === 1) {
-        updatedTimes = updatedTimes.map((ut) => (ut.checked ? { ...ut, disabled: true } : ut));
+        updatedTimes = updatedTimes.map((ut) =>
+          ut.checked ? { ...ut, disabled: true } : ut,
+        );
       } else {
         updatedTimes = updatedTimes.map((ut) => ({ ...ut, disabled: false }));
       }
@@ -690,26 +717,44 @@ export function ShiftScheduler() {
       <CalendarNav />
       <div className="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-end">
         {shiftTimes.map((cs) => (
-          <Checkbox key={cs.id} value={cs.id} checked={cs.checked} disabled={cs.disabled} onChange={checkboxChange} theme="material">
+          <Checkbox
+            key={cs.id}
+            value={cs.id}
+            checked={cs.checked}
+            disabled={cs.disabled}
+            onChange={checkboxChange}
+            theme="windows"
+          >
             {cs.name}
           </Checkbox>
         ))}
       </div>
-      <Select data={views} value={selectedView} onChange={viewChange} inputStyle="box" />
+      <Select
+        data={views}
+        value={selectedView}
+        onChange={viewChange}
+        inputStyle="box"
+      />
       <CalendarPrev />
       <CalendarToday />
       <CalendarNext />
     </>
   );
 
-  const isDouble = useCallback((event: MbscCalendarEvent, inst: Eventcalendar) => {
-    const date = new Date(event.start as string).setHours(0);
-    const events = inst.getEvents(new Date(date));
-    const ev = events.find(
-      (e) => new Date(e.start as string).setHours(0) === date && e.resource === event.resource && e.slot === event.slot,
-    );
-    return ev;
-  }, []);
+  const isDouble = useCallback(
+    (event: MbscCalendarEvent, inst: Eventcalendar) => {
+      const date = new Date(event.start as string).setHours(0);
+      const events = inst.getEvents(new Date(date));
+      const ev = events.find(
+        (e) =>
+          new Date(e.start as string).setHours(0) === date &&
+          e.resource === event.resource &&
+          e.slot === event.slot,
+      );
+      return ev;
+    },
+    [],
+  );
 
   const handleCreateEvent = useCallback(
     (args: MbscEventCreateEvent, inst: Eventcalendar) => {

@@ -1,3 +1,10 @@
+/**
+ * This module defines several REST API endpoints for the restaurant entity.
+ *
+ * @module Restaurants
+ * @see {@link https://jsdoc.app/|JSDoc}
+ */
+
 import { EventEmitter } from 'events';
 import { z } from 'zod';
 import { authedProcedure, publicProcedure, router } from '../trpc';
@@ -5,10 +12,22 @@ import { prisma } from '../prisma';
 import { RestaurantFormType } from '../../types';
 import { restaurantCreationSchema } from '../../common/restaurant/schema';
 
+/**
+ * Interface which defines the events available in the restaurant entity context.
+ *
+ * @typedef {object} MyRestaurantEvents
+ *
+ * @property {function} addRestaurant - Triggered when a restaurant is added.
+ */
 interface MyRestaurantEvents {
   addRestaurant: (data: RestaurantFormType) => void;
 }
 
+/**
+ * Interface which defines the available methods for event triggering in the restaurant entity context.
+ *
+ * @interface MyRestaurantEventEmitter
+ */
 declare interface MyRestaurantEventEmitter {
   on<TEv extends keyof MyRestaurantEvents>(
     event: TEv,
@@ -31,12 +50,26 @@ declare interface MyRestaurantEventEmitter {
   ): boolean;
 }
 
+/**
+ * Creates restaurant event emitter.
+ *
+ * @extends EventEmitter
+ */
 class MyRestaurantEventEmitter extends EventEmitter {}
 
+/**
+ * Instantiate the restaurant event emitter.
+ */
 const ee = new MyRestaurantEventEmitter();
 
-// TODO: Modify this to be used by RestaurantForm component.
+/**
+ * Export a trpc router with several endpoint handlers encapsulating various restaurant-related operations.
+ * These operations include fetching restaurants by context, adding new restaurants and adding images to restaurants.
+ */
 export const restaurantRouter = router({
+  /**
+   * Get all restaurants that match the request context's user ID.
+   */
   getRestaurantByContext: authedProcedure.query(async ({ ctx }) => {
     return prisma.restaurant.findMany({
       where: {
@@ -44,7 +77,11 @@ export const restaurantRouter = router({
       },
     });
   }),
-  // TODO: Consider making authedProcedure
+
+  /**
+   * Add new restaurant.
+   * Emits the `addRestaurant` event once the restaurant has been added successfully.
+   */
   addRestaurant: authedProcedure
     .input(
       restaurantCreationSchema.extend({
@@ -76,6 +113,11 @@ export const restaurantRouter = router({
       ee.emit('addRestaurant', restaurant);
       return restaurant;
     }),
+
+  /**
+   * Add image to a restaurant.
+   * Note: the hosting provider for the image is yet to be chosen.
+   */
   addRestaurantImage: publicProcedure
     .input(
       z.object({
@@ -84,7 +126,6 @@ export const restaurantRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      //  TODO: Choose a hosting provider.
       const restaurantImage = await prisma.restaurant.update({
         where: {
           id: input.id,

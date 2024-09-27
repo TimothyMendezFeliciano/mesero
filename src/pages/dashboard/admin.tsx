@@ -6,7 +6,7 @@ import DashboardBanner from '../../components/Dashboard/Banner';
 import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
 import { useMemo } from 'react';
-import Room from '../../components/Chat/Room';
+import { ChatRoom } from '../../components/Chat/Room';
 import { trpc } from '../../utils/trpc';
 import { Restaurant } from '../../models/main';
 import ShiftScheduler from '../../components/Mobiscroll/ShiftScheduler';
@@ -46,13 +46,13 @@ const Admin: NextPage = (props: { session: string }, context) => {
               restaurants={data ? (data as Restaurant[]) : []}
             />
           }
-          LeftComponent={<Room />}
+          ChatRoom={<ChatRoom />}
           // MainComponent={
           //   <div className={'flex w-full h-full'}>
           //     Here goes the Calendar if I had one!
           //   </div>
           // }
-          MainComponent={<ShiftScheduler/>}
+          MainComponent={<ShiftScheduler />}
         />
       </Layout>
     </>
