@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 import {
   HeaderWithThreeColumns,
   tiers,
-} from '../../components/HeaderWithThreeColumns';
+} from '../../components/Header/HeaderWithThreeColumns';
 
 export const getServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
