@@ -8,9 +8,9 @@
 import { EventEmitter } from 'events';
 import { z } from 'zod';
 import { authedProcedure, publicProcedure, router } from '../trpc';
-import { prisma } from '../prisma';
 import { RestaurantFormType } from '../../types';
 import { restaurantCreationSchema } from '../../common/restaurant/schema';
+import { prisma } from '../prisma';
 
 /**
  * Interface which defines the events available in the restaurant entity context.
