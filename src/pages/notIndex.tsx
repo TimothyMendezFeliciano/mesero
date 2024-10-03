@@ -342,7 +342,7 @@ import Layout from '../components/Layout';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <p>There's nothing here</p>
+      <p>There is nothing here</p>
     </Layout>
   );
 };
