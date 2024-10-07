@@ -1,14 +1,24 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "typeRoots": ["/types/next-auth.d.ts"],
+    "typeRoots": ["./types/next-auth.d.ts",
+      "./types/styled-components.d.ts"
+    ],
     "module": "commonjs",
     "outDir": "dist",
     "target": "ES2019",
     "lib": ["ES2019", "DOM"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": false,
     "strict": false,
+    "noImplicitAny": false
   },
   "include": [
     "/types/next-auth.d.ts",
