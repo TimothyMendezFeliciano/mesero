@@ -5,11 +5,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 /**
  * Initialize Stripe with API version and secret key.
  */
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-04-10',
 });
 
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET;
 
 /**
  * Configures the bodyParser to not parse JSON in case of webhook events.
@@ -48,7 +48,7 @@ export default async function webhookHandler(
      * The Stripe Signature is a HTTP header that Stripe uses to sign an event.
      * This signature is used to validate the event and confirm that it came from Stripe webhooks.
      */
-    const sig = req.headers['stripe-signature']!;
+    const sig = req.headers['stripe-signature'];
 
     let event: Stripe.Event;
 

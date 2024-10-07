@@ -87,8 +87,6 @@ export const stripeRouter = router({
           apiVersion: '2024-04-10',
         });
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         const checkoutSession = await stripe.checkout.sessions.create({
           mode: 'subscription',
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

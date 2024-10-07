@@ -1,6 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
-import { trpc } from '../utils/trpc';
-import getStripe from '../utils/getStripe';
+import { trpc } from '../../utils/trpc';
+import getStripe from '../../utils/getStripe';
 
 export const tiers = [
   {
@@ -82,7 +82,7 @@ export function Tier({
   const handleCreateCheckoutSession = async (priceId) => {
     const { result } = await mutateAsync({ priceId });
     const stripe = await getStripe();
-    const { error } = await stripe!.redirectToCheckout({
+    const { error } = await stripe.redirectToCheckout({
       sessionId: result.id,
     });
     console.warn(error.message);

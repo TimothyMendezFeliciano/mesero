@@ -32,9 +32,8 @@ async function main() {
       newAvgOrderCount: exampleRestaurant.newAvgOrderCount,
       location: {
         create: {
-          longitud: exampleRestaurant.location.longitude,
-          latitude: exampleRestaurant.location.latitude,
-          coordinates: exampleRestaurant.location.coordinates,
+          id: 'fakeTown',
+          town: 'fakeTown',
         },
       },
       menu: {

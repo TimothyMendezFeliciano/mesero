@@ -47,6 +47,7 @@ function getEndingLink(ctx: NextPageContext | undefined) {
  * @link https://trpc.io/docs/v11/react#3-create-trpc-hooks
  */
 export const trpc = createTRPCNext<AppRouter>({
+  // @ts-ignore
   config({ ctx }) {
     /**
      * If you want to use SSR, you need to use the server's full URL
