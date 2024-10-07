@@ -22,7 +22,8 @@
     "isolatedModules": false,
     "noEmit": false,
     "strict": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": "./src/server"
   },
   "include": [
     "/types/next-auth.d.ts",
