@@ -22,7 +22,8 @@
     "jsx": "preserve",
     "baseUrl": "./src",
     "incremental": true,
-    "strict": false
+    "strict": false,
+    "noImplicitAnyForClassMembers": false
   },
   "include": [
     "/types/next-auth.d.ts",
