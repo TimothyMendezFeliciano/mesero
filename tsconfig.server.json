@@ -23,13 +23,16 @@
     "noEmit": true,
     "strict": false,
     "noImplicitAny": false,
-    "baseUrl": "./src/server"
   },
   "include": [
     "/types/next-auth.d.ts",
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/server/**/*.ts",
+    "src/server/**/*.ts",
   ],
   "exclude": [
     "node_modules"
