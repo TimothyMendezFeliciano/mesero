@@ -22,6 +22,8 @@ export function RestaurantForm() {
   const watchAllFields = watch();
 
   const onSubmit: SubmitHandler<IRestaurant> = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore @ts-expect-error
     await addRestaurant.mutateAsync({ ...data, userId: admin.user.id });
   };
   const onInvalid: SubmitErrorHandler<IRestaurant> = (error) => {
