@@ -20,7 +20,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": false,
+    "noEmit": true,
     "strict": false,
     "noImplicitAny": false,
     "baseUrl": "./src/server"
