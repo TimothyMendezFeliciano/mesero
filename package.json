@@ -1,5 +1,5 @@
 {
-  "name": "@examples/next-websockets-starter",
+  "name": "mesero",
   "version": "10.45.0",
   "private": true,
   "engines": {
