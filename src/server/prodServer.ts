@@ -15,6 +15,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 void app.prepare().then(() => {
+  console.log('PRODUCTION_PORT', { port, dev, app, handle });
   const server = createServer(async (req, res) => {
     if (!req.url) return;
     const parsedUrl = parse(req.url, true);
@@ -22,6 +23,11 @@ void app.prepare().then(() => {
   });
   const wss = new WebSocketServer({ server });
   const handler = applyWSSHandler({ wss, router: appRouter, createContext });
+  console.log('PRODUCTION_CONNECTION', {
+    server,
+    wss,
+    handler,
+  });
 
   process.on('SIGTERM', () => {
     console.log('SIGTERM');
