@@ -6,7 +6,7 @@
       "./types/styled-components.d.ts"
     ],
     "module": "commonjs",
-    "outDir": "dist",
+    "outDir": "./dist",
     "target": "ES2019",
     "lib": [
       "ES2019",
@@ -20,8 +20,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": true,
     "strict": false,
+    "noEmit": false,
     "noImplicitAny": false,
   },
   "include": [
