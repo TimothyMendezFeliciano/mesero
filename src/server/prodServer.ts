@@ -9,7 +9,7 @@ import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import { createContext } from './context';
 import { appRouter } from './routers/_app';
 
-const port = parseInt(process.env.PORT || '3000', 10);
+const port = parseInt(process.env.PORT || '10000', 10);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
