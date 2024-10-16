@@ -2,7 +2,7 @@
  * This file contains the root router of your tRPC-backend
  */
 import { router, publicProcedure } from '../trpc';
-import { postRouter } from './post';
+// import { postRouter } from './post';
 import { observable } from '@trpc/server/observable';
 import { clearInterval } from 'timers';
 import { restaurantRouter } from './restaurant';
@@ -13,7 +13,7 @@ import { stripeRouter } from './stripe';
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
   signIn: signInRouter,
-  post: postRouter,
+  // post: postRouter,
   restaurant: restaurantRouter,
   menuItems: menuItemsRouter,
   stripe: stripeRouter,

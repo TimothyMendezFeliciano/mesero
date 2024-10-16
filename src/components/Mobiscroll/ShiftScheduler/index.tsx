@@ -578,9 +578,8 @@ export function ShiftScheduler() {
   );
 
   const getEmployeeName = useCallback((event: MbscCalendarEvent) => {
-    for (let i = 0; i < myResources.length; ++i) {
-      for (let j = 0; j < myResources[i].children.length; ++j) {
-        const employee = myResources[i].children[j];
+    for (const item of myResources) {
+      for (const employee of item.children) {
         if (employee.id === event.resource) {
           return employee.name.substr(0, employee.name.indexOf(' '));
         }
