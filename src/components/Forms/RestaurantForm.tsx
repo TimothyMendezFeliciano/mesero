@@ -13,10 +13,9 @@ import { classNames } from '../../utils/classNames';
 
 export function RestaurantForm() {
   const { data: admin } = useSession();
-  const { register, handleSubmit, watch, formState, trigger } =
-    useForm<IRestaurant>({
-      resolver: zodResolver(restaurantCreationSchema),
-    });
+  const { register, handleSubmit, watch, trigger } = useForm<IRestaurant>({
+    resolver: zodResolver(restaurantCreationSchema),
+  });
 
   const addRestaurant = trpc.restaurant.addRestaurant.useMutation();
   const watchAllFields = watch();
@@ -35,11 +34,14 @@ export function RestaurantForm() {
   useEffect(() => {
     // setCallback(() => handleSubmit(onSubmit));
     const subscription = watch((value, { name, type }) => {
-      console.log('Updating handleSubmit', { value, name, type }),
-        setCallback(() => handleSubmit(onSubmit, onInvalid));
+      console.log('Updating handleSubmit', { value, name, type });
+      setCallback(() => handleSubmit(onSubmit, onInvalid));
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      setCallback(undefined);
+    };
   }, [watch]);
 
   return (

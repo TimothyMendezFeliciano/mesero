@@ -34,7 +34,6 @@ const Admin: NextPage = (props: { session: string }, context) => {
   );
 
   const { data } = trpc.restaurant.getRestaurantByContext.useQuery();
-  console.log('No Restaurants?', data);
 
   return (
     <>

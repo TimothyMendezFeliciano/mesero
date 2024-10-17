@@ -47,6 +47,17 @@ export default function DashboardBanner({
             <RestaurantForm />
           </ControlledModal>
         </ModalProvider>
+
+        <ModalProvider>
+          <ControlledModal
+            id={'RestaurantAddButtonModal'}
+            title={'Añadir Restaurante'}
+            triggerButtonContent={<PlusCircleIcon className={'w-10 h-10'} />}
+            closeButtonContent={<p>Guardar!</p>}
+          >
+            <RestaurantForm />
+          </ControlledModal>
+        </ModalProvider>
       </div>
       <div className="avatar">
         <div className="w-24 rounded">
