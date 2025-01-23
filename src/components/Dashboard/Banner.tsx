@@ -5,6 +5,8 @@ import { RestaurantForm } from '../Forms/RestaurantForm';
 import { ModalProvider } from '../../context/ModalContext';
 import { Restaurant } from '../../models/main';
 import { Session } from 'next-auth';
+import { EmployeeInviteForm } from '../Forms/EmployeeInviteForm';
+import { FaPeopleGroup } from 'react-icons/fa6';
 
 type DashboardProps = {
   admin: Session;
@@ -50,12 +52,12 @@ export default function DashboardBanner({
 
         <ModalProvider>
           <ControlledModal
-            id={'RestaurantAddButtonModal'}
-            title={'Añadir Restaurante'}
-            triggerButtonContent={<PlusCircleIcon className={'w-10 h-10'} />}
-            closeButtonContent={<p>Guardar!</p>}
+            id={'InviteEmployeeButtonModal'}
+            title={'Invitar Empleado'}
+            triggerButtonContent={<FaPeopleGroup className={'w-10 h-10'} />}
+            closeButtonContent={<p>Invitar!</p>}
           >
-            <RestaurantForm />
+            <EmployeeInviteForm restaurant={selected} />
           </ControlledModal>
         </ModalProvider>
       </div>

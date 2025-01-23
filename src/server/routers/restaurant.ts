@@ -9,7 +9,7 @@ import { EventEmitter } from 'events';
 import { z } from 'zod';
 import { authedProcedure, publicProcedure, router } from '../trpc';
 import { RestaurantFormType } from '../../types';
-import { restaurantCreationSchema } from '../../common/restaurant/schema';
+import { employeeInviteSchema, restaurantCreationSchema } from '../../common/restaurant/schema';
 import { prisma } from '../prisma';
 
 /**
@@ -55,7 +55,8 @@ declare interface MyRestaurantEventEmitter {
  *
  * @extends EventEmitter
  */
-class MyRestaurantEventEmitter extends EventEmitter {}
+class MyRestaurantEventEmitter extends EventEmitter {
+}
 
 /**
  * Instantiate the restaurant event emitter.
@@ -126,7 +127,7 @@ export const restaurantRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      const restaurantImage = await prisma.restaurant.update({
+      return prisma.restaurant.update({
         where: {
           id: input.id,
         },
@@ -134,7 +135,15 @@ export const restaurantRouter = router({
           image: input.image,
         },
       });
-
-      return restaurantImage;
+    }),
+  inviteEmployee: authedProcedure
+    .input(
+      z.object({
+        employeeInviteSchema,
+        adminId: z.string().uuid('Admin Id must be a UUID'),
+        restaurantId: z.string().uuid('Restaurant Id must be a UUID'),
+      }),
+    )
+    .mutation(async ({ input }) => {
     }),
 });

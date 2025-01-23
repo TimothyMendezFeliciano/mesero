@@ -83,7 +83,7 @@ export interface RestaurantMenu {
 }
 
 export interface Location {
-  id: string;
+  id?: string;
   town: string;
   restaurant: Restaurant;
   restaurantId: string;
