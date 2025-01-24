@@ -11,6 +11,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps,
 }) => {
+
   return (
     <SessionProvider session={pageProps.session}>
       <Head>

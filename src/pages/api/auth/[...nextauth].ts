@@ -1,13 +1,24 @@
-import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
-import type { AppProviders } from 'next-auth/providers';
+import NextAuth, {
+  Account,
+  NextAuthOptions,
+  Profile,
+  Session,
+  User,
+} from 'next-auth';
+import type { AppProviders, CredentialInput } from 'next-auth/providers';
 import GoogleProvider from 'next-auth/providers/google';
 import Facebook from 'next-auth/providers/facebook';
 import * as process from 'process';
 import { prisma } from '../../../server/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import Stripe from 'stripe';
-import { getUserByEmail } from '../../../controllers/User.Controller';
+import {
+  createUser,
+  getUserByEmail,
+  userExists,
+} from '../../../controllers/User.Controller';
 import { AdapterUser } from 'next-auth/adapters';
+import { createSession } from '../../../controllers/Session.Controller';
 
 const providers: AppProviders = [];
 
@@ -46,11 +57,60 @@ export const nextAuthOptions: NextAuthOptions = {
   // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers,
+  debug: true,
   callbacks: {
-    signIn: async ({ user }: { user: User | AdapterUser }) => {
+    signIn: async ({
+      user,
+      account,
+      profile,
+      email,
+      credentials,
+    }: {
+      user: User | AdapterUser;
+      account: Account;
+      profile?: Profile;
+      email?: { verificationRequest?: boolean };
+      credentials?: Record<string, CredentialInput>;
+    }) => {
+      console.log('YahdielPollo1', [
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+      ]);
+      console.log('userPollo', {
+        user,
+        account,
+        profile,
+        email,
+        credentials,
+      });
+
+      const exists = await userExists(user, { prisma: prisma });
+      let result = {};
+
+      if (exists) {
+        if (exists.sessions[0].expires > Date.now()) {
+        } else {
+          await createSession(user, account, { prisma });
+        }
+      } else {
+        result = await createUser(user, account, { prisma });
+      }
+      console.log('ResultPollo - Entro el usuario?', result);
       return !!user;
     },
+    async redirect({ url, baseUrl }) {
+      console.log('YahdielPollo2', [
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+      ]);
+      console.log('REDIRECT-POLLO', [url, baseUrl]);
+      return baseUrl;
+    },
     session: async ({ session, user }) => {
+      console.log('YahdielPollo3', [
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+      ]);
       let sesh: Session = session;
       try {
         if (session.user?.email) {
@@ -89,9 +149,7 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60,
-    updateAge: 24 * 60 * 60,
+    strategy: 'database',
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
