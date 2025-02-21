@@ -10,6 +10,16 @@ export const requireAuth =
       ctx.res,
       nextAuthOptions,
     );
+    console.log('Chicken Session To Save', session1);
+
+    if (!session1) {
+      return {
+        redirect: {
+          destination: '/', // Home Page,
+          permanent: false,
+        },
+      };
+    }
 
     if (session1.user.role === UserType.OWNER && !session1.user.isActive) {
       return {
@@ -41,15 +51,6 @@ export const requireAuth =
       return {
         redirect: {
           destination: '/dashboard/admin',
-          permanent: false,
-        },
-      };
-    }
-
-    if (!session1) {
-      return {
-        redirect: {
-          destination: '/', // Home Page,
           permanent: false,
         },
       };

@@ -67,7 +67,6 @@ export const createUser = async (
       sessions: {
         create: [
           {
-            id: accountSchema.id_token,
             sessionToken: accountSchema.id_token,
             expires: accountSchema.expires_at,
           },

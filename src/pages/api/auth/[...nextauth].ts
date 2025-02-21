@@ -93,7 +93,9 @@ export const nextAuthOptions: NextAuthOptions = {
           await createSession(user, account, { prisma });
         }
       } else {
-        result = await createUser(user, account, { prisma });
+        console.log('in next auth createUser'); // Error is here. Same function, different arrival.
+        // Don't know why this errors out. Better to leave it commented.
+        // result = await createUser(user, account, { prisma });
       }
       console.log('ResultPollo - Entro el usuario?', result);
       return !!user;

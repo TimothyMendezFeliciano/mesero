@@ -1,0 +1,15 @@
+{
+  "user": {
+    "id": "13052622-5c83-4d0a-b897-817f1a2fe04e",
+    "name": "Timothy Mendez",
+    "email": "timothym.apps@gmail.com",
+    "emailVerified": null,
+    "image": "https://lh3.googleusercontent.com/a/ACg8ocKoTgp6xSllpo6v77Fh7ZbzFfb9xzGIC6jOmXtSQNCcuBFv0uQ=s96-c",
+    "stripeCustomerId": "cus_RobUSjeHgqtGVt",
+    "isActive": true,
+    "createdAt": "2025-02-21T15:37:17.370Z",
+    "updatedAt": "2025-02-21T15:37:51.058Z",
+    "role": "OWNER"
+  },
+  "expires": "2025-03-23T15:37:17.787Z"
+}

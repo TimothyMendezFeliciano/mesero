@@ -28,6 +28,7 @@ export const signInRouter = router({
           };
         }
       } else {
+        console.log('In the Sign In createUser');
         const result = await createUser(userSchema, accountSchema, ctx);
 
         return {
