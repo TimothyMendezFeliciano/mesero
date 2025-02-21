@@ -101,10 +101,11 @@ model User {
   stripeCustomerId String?         @unique
   isActive         Boolean         @default(false)
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  restaurants Restaurant[]
-  role        UserType     @default(GUEST)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  restaurants  Restaurant? @relation(fields: [restaurantId], references: [id])
+  role         UserType    @default(GUEST)
+  restaurantId String
 
   @@index([name])
   @@index([role])
@@ -123,7 +124,7 @@ model Restaurant {
   newAvgOrderCount      Float           @default(0)
   tables                Table[]
   Orders                Orders[]
-  User                  User?           @relation(fields: [userId], references: [id])
+  User                  User[]
   userId                String?
   locationId            String?
 

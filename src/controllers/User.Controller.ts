@@ -77,6 +77,25 @@ export const createUser = async (
 };
 
 /**
+ * The `convertToOwner` function changes the role of a user in the database to 'OWNER'.
+ * It is an async function that returns a promise of User type.
+ * @public
+ * @async
+ * @param {IUser} userSchema - The data of the user which is of IUser type.
+ * @param {any} ctx - The session context.
+ * @returns {Promise<User>} - Returns a Promise that gets resolved with the updated User object as the result.
+ */
+export const convertToOwner = async (userSchema: IUser, ctx: any) => {
+  const updateUserRole = await ctx.prisma.user.update({
+    where: { email: userSchema.email },
+    data: {
+      role: UserType.OWNER,
+    },
+  });
+  return updateUserRole;
+};
+
+/**
  * The `getUserByEmail` function retrieves a user from the database by email.
  * It is an async function that returns a promise of User type.
  * @public

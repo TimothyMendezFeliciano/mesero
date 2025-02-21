@@ -9,8 +9,13 @@ import { EventEmitter } from 'events';
 import { z } from 'zod';
 import { authedProcedure, publicProcedure, router } from '../trpc';
 import { RestaurantFormType } from '../../types';
-import { employeeInviteSchema, restaurantCreationSchema } from '../../common/restaurant/schema';
+import {
+  employeeInviteSchema,
+  restaurantCreationSchema,
+} from '../../common/restaurant/schema';
 import { prisma } from '../prisma';
+import { UserType } from '@prisma/client';
+import { getUserByEmail } from '../../controllers/User.Controller';
 
 /**
  * Interface which defines the events available in the restaurant entity context.
@@ -21,6 +26,7 @@ import { prisma } from '../prisma';
  */
 interface MyRestaurantEvents {
   addRestaurant: (data: RestaurantFormType) => void;
+  employeeAdded: (data: any) => void;
 }
 
 /**
@@ -55,8 +61,7 @@ declare interface MyRestaurantEventEmitter {
  *
  * @extends EventEmitter
  */
-class MyRestaurantEventEmitter extends EventEmitter {
-}
+class MyRestaurantEventEmitter extends EventEmitter {}
 
 /**
  * Instantiate the restaurant event emitter.
@@ -75,6 +80,11 @@ export const restaurantRouter = router({
     return prisma.restaurant.findMany({
       where: {
         userId: ctx.user.id,
+        User: {
+          every: {
+            role: UserType.OWNER,
+          },
+        },
       },
     });
   }),
@@ -145,5 +155,31 @@ export const restaurantRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
+      const restaurant = await prisma.restaurant.findUnique({
+        where: {
+          id: input.restaurantId,
+        },
+        include: {
+          User: {
+            where: {
+              id: input.adminId,
+              role: UserType.OWNER,
+            },
+          },
+        },
+      });
+
+      if (!restaurant) {
+        throw new Error('Restaurant with provided id not found');
+      }
+
+      ee.emit('employeeAdded', {
+        restaurantOwner: restaurant.User[0].name,
+        restaurantName: restaurant.name,
+        employeeName: input.employeeInviteSchema.name,
+        employeeEmail: input.employeeInviteSchema.email,
+      });
+
+      //   TODO: Use Twilio to send an email to the employee letting them know they've been invited.
     }),
 });

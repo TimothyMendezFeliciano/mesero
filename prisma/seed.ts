@@ -9,7 +9,6 @@ import {
   exampleRestaurant,
   exampleTable,
 } from './ExampleRestaurant';
-
 const prisma = new PrismaClient();
 
 async function main() {
