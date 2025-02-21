@@ -112,7 +112,11 @@ export const nextAuthOptions: NextAuthOptions = {
         null,
         2,
       );
-      fs.writeFileSync(path.join(process.cwd(), 'sessionYahdiel.json'), data, 'utf8');
+      fs.writeFileSync(
+        path.join(process.cwd(), 'sessionYahdiel.json'),
+        data,
+        'utf8',
+      );
       return !!user;
     },
     async redirect({ url, baseUrl }) {
