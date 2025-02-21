@@ -10,7 +10,6 @@ export const requireAuth =
       ctx.res,
       nextAuthOptions,
     );
-    console.log('Chicken Session To Save', session1);
 
     if (!session1) {
       return {
@@ -44,7 +43,7 @@ export const requireAuth =
     }
 
     if (
-      session1.user.role === UserType.EMPLOYEE &&
+      session1.user.role !== UserType.EMPLOYEE &&
       session1.user.isActive &&
       ctx.resolvedUrl === '/dashboard/employee'
     ) {

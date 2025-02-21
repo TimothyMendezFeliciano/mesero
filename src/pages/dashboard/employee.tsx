@@ -4,6 +4,7 @@ import { requireAuth } from '../../server/requireAuth';
 import Layout from '../../components/Layout';
 import { getServerSession, Session } from 'next-auth';
 import { nextAuthOptions } from '../api/auth/[...nextauth]';
+import { useMemo } from 'react';
 
 export const getServerSideProps: GetServerSideProps = requireAuth(
   async (ctx: GetServerSidePropsContext) => {
@@ -23,6 +24,10 @@ export const getServerSideProps: GetServerSideProps = requireAuth(
 
 const Employee: NextPage = (props: { session: string }, context) => {
   const { data } = useSession();
+  const session: Session = useMemo(
+    () => JSON.parse(props.session),
+    [props.session],
+  );
   return (
     <Layout>
       <div className="hero min-h-screen bg-base-200">
@@ -38,6 +43,11 @@ const Employee: NextPage = (props: { session: string }, context) => {
             <div className="my-4 bg-gray-700 rounded-lg p-4">
               <pre>
                 <code>{JSON.stringify(data, null, 2)}</code>
+              </pre>
+            </div>
+            <div className="my-4 bg-gray-700 rounded-lg p-4">
+              <pre>
+                <code>{JSON.stringify(session, null, 2)}</code>
               </pre>
             </div>
             <div className="text-center">
