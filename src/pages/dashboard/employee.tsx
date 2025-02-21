@@ -1,13 +1,27 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import { requireAuth } from '../../server/requireAuth';
 import Layout from '../../components/Layout';
+import { getServerSession, Session } from 'next-auth';
+import { nextAuthOptions } from '../api/auth/[...nextauth]';
 
-export const getServerSideProps = requireAuth(async () => {
-  return { props: {} };
-});
+export const getServerSideProps: GetServerSideProps = requireAuth(
+  async (ctx: GetServerSidePropsContext) => {
+    const session1: Session | null = await getServerSession(
+      ctx.req,
+      ctx.res,
+      nextAuthOptions,
+    );
 
-const Employee: NextPage = () => {
+    return {
+      props: {
+        session: JSON.stringify(session1),
+      },
+    };
+  },
+);
+
+const Employee: NextPage = (props: { session: string }, context) => {
   const { data } = useSession();
   return (
     <Layout>

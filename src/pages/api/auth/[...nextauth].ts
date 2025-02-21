@@ -19,6 +19,8 @@ import {
 } from '../../../controllers/User.Controller';
 import { AdapterUser } from 'next-auth/adapters';
 import { createSession } from '../../../controllers/Session.Controller';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const providers: AppProviders = [];
 
@@ -85,7 +87,7 @@ export const nextAuthOptions: NextAuthOptions = {
       });
 
       const exists = await userExists(user, { prisma: prisma });
-      let result = {};
+      const result = {};
 
       if (exists) {
         if (exists.sessions[0].expires > Date.now()) {
@@ -98,6 +100,19 @@ export const nextAuthOptions: NextAuthOptions = {
         // result = await createUser(user, account, { prisma });
       }
       console.log('ResultPollo - Entro el usuario?', result);
+      const data = JSON.stringify(
+        {
+          user,
+          account,
+          profile,
+          email,
+          credentials,
+          exists,
+        },
+        null,
+        2,
+      );
+      fs.writeFileSync(path.join(process.cwd(), 'session.json'), data, 'utf8');
       return !!user;
     },
     async redirect({ url, baseUrl }) {
