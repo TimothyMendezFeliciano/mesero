@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@auth/prisma-adapter':
         specifier: ^1.5.0
-        version: 1.5.0(@prisma/client@5.19.1(prisma@5.19.1))
+        version: 1.5.0(@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))
       '@googlemaps/js-api-loader':
         specifier: ^1.16.8
         version: 1.16.8
@@ -27,8 +27,8 @@ importers:
         specifier: npm:@mobiscroll/react-next@5.32.0
         version: '@mobiscroll/react-next@5.32.0(react-dom@18.2.0(react@18.3.1))(react@18.3.1)'
       '@prisma/client':
-        specifier: ^5.19.1
-        version: 5.19.1(prisma@5.19.1)
+        specifier: ^6.4.1
+        version: 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
       '@react-google-maps/api':
         specifier: ^2.19.3
         version: 2.19.3(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
@@ -73,7 +73,7 @@ importers:
         version: 4.24.5(next@14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1))(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
       next-pwa:
         specifier: ^5.6.0
-        version: 5.6.0(@babel/core@7.24.0)(next@14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1))(webpack@5.90.3)
+        version: 5.6.0(@babel/core@7.24.0)(esbuild@0.19.12)(next@14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1))(webpack@5.90.3(esbuild@0.19.12))
       randomcolor:
         specifier: ^0.6.2
         version: 0.6.2
@@ -190,8 +190,8 @@ importers:
         specifier: ^2.8.8
         version: 2.8.8
       prisma:
-        specifier: ^5.19.1
-        version: 5.19.1
+        specifier: ^6.4.1
+        version: 6.4.1(typescript@5.6.3)
       start-server-and-test:
         specifier: ^1.12.0
         version: 1.15.5
@@ -1185,29 +1185,32 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  '@prisma/client@5.19.1':
-    resolution: {integrity: sha512-x30GFguInsgt+4z5I4WbkZP2CGpotJMUXy+Gl/aaUjHn2o1DnLYNTA+q9XdYmAQZM8fIIkvUiA2NpgosM3fneg==}
-    engines: {node: '>=16.13'}
+  '@prisma/client@6.4.1':
+    resolution: {integrity: sha512-A7Mwx44+GVZVexT5e2GF/WcKkEkNNKbgr059xpr5mn+oUm2ZW1svhe+0TRNBwCdzhfIZ+q23jEgsNPvKD9u+6g==}
+    engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
+      typescript: '>=5.1.0'
     peerDependenciesMeta:
       prisma:
         optional: true
+      typescript:
+        optional: true
 
-  '@prisma/debug@5.19.1':
-    resolution: {integrity: sha512-lAG6A6QnG2AskAukIEucYJZxxcSqKsMK74ZFVfCTOM/7UiyJQi48v6TQ47d6qKG3LbMslqOvnTX25dj/qvclGg==}
+  '@prisma/debug@6.4.1':
+    resolution: {integrity: sha512-Q9xk6yjEGIThjSD8zZegxd5tBRNHYd13GOIG0nLsanbTXATiPXCLyvlYEfvbR2ft6dlRsziQXfQGxAgv7zcMUA==}
 
-  '@prisma/engines-version@5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3':
-    resolution: {integrity: sha512-xR6rt+z5LnNqTP5BBc+8+ySgf4WNMimOKXRn6xfNRDSpHvbOEmd7+qAOmzCrddEc4Cp8nFC0txU14dstjH7FXA==}
+  '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d':
+    resolution: {integrity: sha512-Xq54qw55vaCGrGgIJqyDwOq0TtjZPJEWsbQAHugk99hpDf2jcEeQhUcF+yzEsSqegBaDNLA4IC8Nn34sXmkiTQ==}
 
-  '@prisma/engines@5.19.1':
-    resolution: {integrity: sha512-kR/PoxZDrfUmbbXqqb8SlBBgCjvGaJYMCOe189PEYzq9rKqitQ2fvT/VJ8PDSe8tTNxhc2KzsCfCAL+Iwm/7Cg==}
+  '@prisma/engines@6.4.1':
+    resolution: {integrity: sha512-KldENzMHtKYwsOSLThghOIdXOBEsfDuGSrxAZjMnimBiDKd3AE4JQ+Kv+gBD/x77WoV9xIPf25GXMWffXZ17BA==}
 
-  '@prisma/fetch-engine@5.19.1':
-    resolution: {integrity: sha512-pCq74rtlOVJfn4pLmdJj+eI4P7w2dugOnnTXpRilP/6n5b2aZiA4ulJlE0ddCbTPkfHmOL9BfaRgA8o+1rfdHw==}
+  '@prisma/fetch-engine@6.4.1':
+    resolution: {integrity: sha512-uZ5hVeTmDspx7KcaRCNoXmcReOD+84nwlO2oFvQPRQh9xiFYnnUKDz7l9bLxp8t4+25CsaNlgrgilXKSQwrIGQ==}
 
-  '@prisma/get-platform@5.19.1':
-    resolution: {integrity: sha512-sCeoJ+7yt0UjnR+AXZL7vXlg5eNxaFOwC23h0KvW1YIXUoa7+W2ZcAUhoEQBmJTW4GrFqCuZ8YSP0mkDa4k3Zg==}
+  '@prisma/get-platform@6.4.1':
+    resolution: {integrity: sha512-gXqZaDI5scDkBF8oza7fOD3Q3QMD0e0rBynlzDDZdTWbWmzjuW58PRZtj+jkvKje2+ZigCWkH8SsWZAsH6q1Yw==}
 
   '@react-aria/focus@3.18.2':
     resolution: {integrity: sha512-Jc/IY+StjA3uqN73o6txKQ527RFU7gnG5crEl5Xy3V+gbYp2O5L3ezAo/E0Ipi2cyMbG6T5Iit1IDs7hcGu8aw==}
@@ -1567,6 +1570,7 @@ packages:
 
   acorn-import-assertions@1.9.0:
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
 
@@ -2099,6 +2103,11 @@ packages:
   es-to-primitive@1.2.1:
     resolution: {integrity: sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==}
     engines: {node: '>= 0.4'}
+
+  esbuild-register@3.6.0:
+    resolution: {integrity: sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg==}
+    peerDependencies:
+      esbuild: '>=0.12 <1'
 
   esbuild@0.19.12:
     resolution: {integrity: sha512-aARqgq8roFBj054KvQr5f1sFu0D65G+miZRCuJyJ0G13Zwx7vRar5Zhn2tkQNzIXcBrNVsv/8stehpj+GAjgbg==}
@@ -3405,10 +3414,15 @@ packages:
   pretty-format@3.8.0:
     resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}
 
-  prisma@5.19.1:
-    resolution: {integrity: sha512-c5K9MiDaa+VAAyh1OiYk76PXOme9s3E992D7kvvIOhCrNsBQfy2mP2QAQtX0WNj140IgG++12kwZpYB9iIydNQ==}
-    engines: {node: '>=16.13'}
+  prisma@6.4.1:
+    resolution: {integrity: sha512-q2uJkgXnua/jj66mk6P9bX/zgYJFI/jn4Yp0aS6SPRrjH/n6VyOV7RDe1vHD0DX8Aanx4MvgmUPPoYnR6MJnPg==}
+    engines: {node: '>=18.18'}
     hasBin: true
+    peerDependencies:
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
@@ -4282,10 +4296,10 @@ snapshots:
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
 
-  '@auth/prisma-adapter@1.5.0(@prisma/client@5.19.1(prisma@5.19.1))':
+  '@auth/prisma-adapter@1.5.0(@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))':
     dependencies:
       '@auth/core': 0.28.0
-      '@prisma/client': 5.19.1(prisma@5.19.1)
+      '@prisma/client': 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
       - '@simplewebauthn/server'
@@ -5290,30 +5304,31 @@ snapshots:
     dependencies:
       playwright: 1.41.1
 
-  '@prisma/client@5.19.1(prisma@5.19.1)':
+  '@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)':
     optionalDependencies:
-      prisma: 5.19.1
+      prisma: 6.4.1(typescript@5.6.3)
+      typescript: 5.6.3
 
-  '@prisma/debug@5.19.1': {}
+  '@prisma/debug@6.4.1': {}
 
-  '@prisma/engines-version@5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3': {}
+  '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d': {}
 
-  '@prisma/engines@5.19.1':
+  '@prisma/engines@6.4.1':
     dependencies:
-      '@prisma/debug': 5.19.1
-      '@prisma/engines-version': 5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3
-      '@prisma/fetch-engine': 5.19.1
-      '@prisma/get-platform': 5.19.1
+      '@prisma/debug': 6.4.1
+      '@prisma/engines-version': 6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d
+      '@prisma/fetch-engine': 6.4.1
+      '@prisma/get-platform': 6.4.1
 
-  '@prisma/fetch-engine@5.19.1':
+  '@prisma/fetch-engine@6.4.1':
     dependencies:
-      '@prisma/debug': 5.19.1
-      '@prisma/engines-version': 5.19.1-2.69d742ee20b815d88e17e54db4a2a7a3b30324e3
-      '@prisma/get-platform': 5.19.1
+      '@prisma/debug': 6.4.1
+      '@prisma/engines-version': 6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d
+      '@prisma/get-platform': 6.4.1
 
-  '@prisma/get-platform@5.19.1':
+  '@prisma/get-platform@6.4.1':
     dependencies:
-      '@prisma/debug': 5.19.1
+      '@prisma/debug': 6.4.1
 
   '@react-aria/focus@3.18.2(react@18.3.1)':
     dependencies:
@@ -5902,14 +5917,14 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  babel-loader@8.3.0(@babel/core@7.24.0)(webpack@5.90.3):
+  babel-loader@8.3.0(@babel/core@7.24.0)(webpack@5.90.3(esbuild@0.19.12)):
     dependencies:
       '@babel/core': 7.24.0
       find-cache-dir: 3.3.2
       loader-utils: 2.0.4
       make-dir: 3.1.0
       schema-utils: 2.7.1
-      webpack: 5.90.3
+      webpack: 5.90.3(esbuild@0.19.12)
 
   babel-plugin-polyfill-corejs2@0.4.10(@babel/core@7.24.0):
     dependencies:
@@ -6047,10 +6062,10 @@ snapshots:
 
   classnames@2.5.1: {}
 
-  clean-webpack-plugin@4.0.0(webpack@5.90.3):
+  clean-webpack-plugin@4.0.0(webpack@5.90.3(esbuild@0.19.12)):
     dependencies:
       del: 4.1.1
-      webpack: 5.90.3
+      webpack: 5.90.3(esbuild@0.19.12)
 
   client-only@0.0.1: {}
 
@@ -6337,6 +6352,13 @@ snapshots:
       is-callable: 1.2.7
       is-date-object: 1.0.5
       is-symbol: 1.0.4
+
+  esbuild-register@3.6.0(esbuild@0.19.12):
+    dependencies:
+      debug: 4.3.4
+      esbuild: 0.19.12
+    transitivePeerDependencies:
+      - supports-color
 
   esbuild@0.19.12:
     optionalDependencies:
@@ -7544,14 +7566,14 @@ snapshots:
       react-dom: 18.2.0(react@18.3.1)
       uuid: 8.3.2
 
-  next-pwa@5.6.0(@babel/core@7.24.0)(next@14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1))(webpack@5.90.3):
+  next-pwa@5.6.0(@babel/core@7.24.0)(esbuild@0.19.12)(next@14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1))(webpack@5.90.3(esbuild@0.19.12)):
     dependencies:
-      babel-loader: 8.3.0(@babel/core@7.24.0)(webpack@5.90.3)
-      clean-webpack-plugin: 4.0.0(webpack@5.90.3)
+      babel-loader: 8.3.0(@babel/core@7.24.0)(webpack@5.90.3(esbuild@0.19.12))
+      clean-webpack-plugin: 4.0.0(webpack@5.90.3(esbuild@0.19.12))
       globby: 11.1.0
       next: 14.1.0(@babel/core@7.24.0)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
-      terser-webpack-plugin: 5.3.10(webpack@5.90.3)
-      workbox-webpack-plugin: 6.6.0(webpack@5.90.3)
+      terser-webpack-plugin: 5.3.10(esbuild@0.19.12)(webpack@5.90.3(esbuild@0.19.12))
+      workbox-webpack-plugin: 6.6.0(webpack@5.90.3(esbuild@0.19.12))
       workbox-window: 6.6.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -7875,11 +7897,16 @@ snapshots:
 
   pretty-format@3.8.0: {}
 
-  prisma@5.19.1:
+  prisma@6.4.1(typescript@5.6.3):
     dependencies:
-      '@prisma/engines': 5.19.1
+      '@prisma/engines': 6.4.1
+      esbuild: 0.19.12
+      esbuild-register: 3.6.0(esbuild@0.19.12)
     optionalDependencies:
       fsevents: 2.3.3
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - supports-color
 
   prop-types@15.8.1:
     dependencies:
@@ -8466,14 +8493,16 @@ snapshots:
       type-fest: 0.16.0
       unique-string: 2.0.0
 
-  terser-webpack-plugin@5.3.10(webpack@5.90.3):
+  terser-webpack-plugin@5.3.10(esbuild@0.19.12)(webpack@5.90.3(esbuild@0.19.12)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.22
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.29.2
-      webpack: 5.90.3
+      webpack: 5.90.3(esbuild@0.19.12)
+    optionalDependencies:
+      esbuild: 0.19.12
 
   terser@5.29.2:
     dependencies:
@@ -8699,7 +8728,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.90.3:
+  webpack@5.90.3(esbuild@0.19.12):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.5
@@ -8722,7 +8751,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.90.3)
+      terser-webpack-plugin: 5.3.10(esbuild@0.19.12)(webpack@5.90.3(esbuild@0.19.12))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
@@ -8890,12 +8919,12 @@ snapshots:
 
   workbox-sw@6.6.0: {}
 
-  workbox-webpack-plugin@6.6.0(webpack@5.90.3):
+  workbox-webpack-plugin@6.6.0(webpack@5.90.3(esbuild@0.19.12)):
     dependencies:
       fast-json-stable-stringify: 2.1.0
       pretty-bytes: 5.6.0
       upath: 1.2.0
-      webpack: 5.90.3
+      webpack: 5.90.3(esbuild@0.19.12)
       webpack-sources: 1.4.3
       workbox-build: 6.6.0
     transitivePeerDependencies:
